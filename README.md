@@ -32,7 +32,7 @@
 </br>
 
 ## 🚀 프로젝트 구조도
-<p align="center"><img src="https://user-images.githubusercontent.com/66009926/222895748-ae61079e-8d7a-44aa-8e64-dbc9af682a25.jpg" width="80%"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/66009926/222897300-96f09bc4-a839-4971-a7d5-eb0a829781b3.jpg" width="80%"></p>
 
 </br>
 
