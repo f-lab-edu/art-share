@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  firebase-emulator:
+    image: "ghcr.io/business-canvas/emulator:latest"
+    volumes:
+      - ./firebase/firebase.json:/firebase.json
+      - ./firebase/emulator-entrypoint.sh:/emulator-entrypoint.sh
+    expose:
+      - "9099"
+    ports:
+      - "9099:9099"
+      - "4000:4000"
+    entrypoint: ["bash", "/emulator-entrypoint.sh"]
+
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+    environment:
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: my_db
+    volumes:
+      - ./db:/var/run/mysql
+    ports:
+      - "13306:3306"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+networks:
+  my-network:

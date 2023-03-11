@@ -1,0 +1,7 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      additional-paths: .
+      trigger-file: reload.txt

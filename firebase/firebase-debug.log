@@ -1,0 +1,25 @@
+[debug] [2023-03-11T08:19:44.014Z] ----------------------------------------------------------------------
+[debug] [2023-03-11T08:19:44.027Z] Command:       /usr/local/bin/node /usr/local/bin/firebase emulators:start --project=change-me --import /firebase/baseline-data
+[debug] [2023-03-11T08:19:44.029Z] CLI Version:   9.17.0
+[debug] [2023-03-11T08:19:44.029Z] Platform:      linux
+[debug] [2023-03-11T08:19:44.030Z] Node Version:  v14.17.6
+[debug] [2023-03-11T08:19:44.044Z] Time:          Sat Mar 11 2023 08:19:44 GMT+0000 (Coordinated Universal Time)
+[debug] [2023-03-11T08:19:44.045Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-11T08:19:44.062Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-03-11T08:19:44.499Z] Field ".emulators.auth.port" in "firebase.json" is possibly invalid: should be number
+[debug] [2023-03-11T08:19:44.533Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] Failed to authenticate, have you run firebase login?
+[warn] ⚠  emulators: You are not currently authenticated so some features may not work correctly. Please run firebase login to authenticate the CLI. 
+[info] i  emulators: Starting emulators: auth, functions, firestore, database, pubsub, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, database, pubsub, storage"}}
+[debug] [2023-03-11T08:19:44.741Z] [hub] writing locator at /tmp/hub-change-me.json
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2023-03-11T08:19:44.787Z] Error: ENOENT: no such file or directory, lstat '/firebase/baseline-data'
+    at Object.lstatSync (fs.js:1115:3)
+    at findExportMetadata (/usr/local/lib/node_modules/firebase-tools/lib/emulator/controller.js:159:32)
+    at Object.startAll (/usr/local/lib/node_modules/firebase-tools/lib/emulator/controller.js:234:31)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Command.actionFn (/usr/local/lib/node_modules/firebase-tools/lib/commands/emulators-start.js:26:9)
+[error] 
+[error] Error: An unexpected error has occurred.
