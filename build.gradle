@@ -1,0 +1,71 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.jetbrains.kotlin.jvm' version '1.7.22'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.7.22'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.7.22'
+}
+
+group = 'com.flab'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/libs-snapshot' }
+	maven { url 'https://jitpack.io' }
+	maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+	maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+	maven { url 'https://repo.spring.io/plugins-release' }
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+tasks.withType(KotlinCompile) {
+	kotlinOptions {
+		freeCompilerArgs = ['-Xjsr305=strict']
+		jvmTarget = '17'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 파일이 변경되면 restart합니다
+task buildAndReload {
+	dependsOn build
+	mustRunAfter build    // buildAndReload must run after the source files are built into class files using build task
+	doLast {
+		new File(".", "reload.txt").text = "${System.currentTimeMillis()}" // update trigger file in root folder for hot reload
+	}
+}
+
+// 변경된 파일을 복사합니다.
+task updateLib(type: Copy) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from configurations.compileClasspath into "libs/"
+	from configurations.runtimeClasspath into "libs/"
+}
+
+bootRun {
+	String activeProfile = System.properties['spring.profiles.active']
+	systemProperty "spring.profiles.active", activeProfile
+}
