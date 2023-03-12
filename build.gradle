@@ -1,72 +1,140 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id 'org.springframework.boot' version '2.6.3'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.jetbrains.kotlin.jvm' version '1.7.22'
-	id 'org.jetbrains.kotlin.plugin.spring' version '1.7.22'
-	id 'org.jetbrains.kotlin.plugin.jpa' version '1.7.22'
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.30'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.5.30'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.5.30'
+    id 'checkstyle'
+    id 'jacoco'
 }
+
+checkstyle {
+    ignoreFailures = true // 분석결과 예외가 발생하면 빌드실패 발생시키는 것을 제외
+    configFile = rootProject.file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
+    reportsDir = file("${buildDir}/checkstyle-output") // 리포트 파일이 위치할 디렉토리 지정
+    toolVersion = '10.6.0'
+}
+
+checkstyleMain {
+    reports {
+        xml.destination = file("${checkstyle.reportsDir}/checkstyle-report.xml") // 리포트 파일의 위치 및 파일명 지정
+    }
+}
+
 
 group = 'com.flab'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
-	maven { url 'https://repo.spring.io/libs-snapshot' }
-	maven { url 'https://jitpack.io' }
-	maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
-	maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
-	maven { url 'https://repo.spring.io/plugins-release' }
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.spring.io/plugins-release' }
 }
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-	implementation 'org.jetbrains.kotlin:kotlin-reflect'
-	implementation 'com.google.firebase:firebase-admin:9.1.1'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //testImplementation 'org.springframework.security:spring-security-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 }
 
 tasks.withType(KotlinCompile) {
-	kotlinOptions {
-		freeCompilerArgs = ['-Xjsr305=strict']
-		jvmTarget = '17'
-	}
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        kotlinOptions.jvmTarget = "11"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 // 파일이 변경되면 restart합니다
 task buildAndReload {
-	dependsOn build
-	mustRunAfter build    // buildAndReload must run after the source files are built into class files using build task
-	doLast {
-		new File(".", "reload.txt").text = "${System.currentTimeMillis()}" // update trigger file in root folder for hot reload
-	}
+    dependsOn build
+    mustRunAfter build    // buildAndReload must run after the source files are built into class files using build task
+    doLast {
+        new File(".", "reload.txt").text = "${System.currentTimeMillis()}"
+        // update trigger file in root folder for hot reload
+    }
 }
 
 // 변경된 파일을 복사합니다.
 task updateLib(type: Copy) {
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	from configurations.compileClasspath into "libs/"
-	from configurations.runtimeClasspath into "libs/"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from configurations.implementation into "libs/"
+    from configurations.implementation into "libs/"
 }
 
 bootRun {
-	String activeProfile = System.properties['spring.profiles.active']
-	systemProperty "spring.profiles.active", activeProfile
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+    toolVersion = '0.8.7'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        csv.enabled true
+        xml.enabled true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ["com/flab/art_share/ArtShareApplication.kt"])
+        }))
+    }
+    finalizedBy 'jacocoTestCoverageVerification'
+
+}
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ["com/flab/art_share/ArtShareApplication.kt"])
+        }))
+    }
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.0
+            }
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.0
+            }
+        }
+    }
 }
