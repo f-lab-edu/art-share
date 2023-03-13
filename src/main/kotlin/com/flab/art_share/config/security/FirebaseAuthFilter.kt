@@ -1,4 +1,4 @@
-package com.flab.art_share.config
+package com.flab.art_share.config.security
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException

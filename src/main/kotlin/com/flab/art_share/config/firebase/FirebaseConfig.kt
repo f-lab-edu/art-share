@@ -1,4 +1,4 @@
-package com.flab.art_share.config
+package com.flab.art_share.config.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
