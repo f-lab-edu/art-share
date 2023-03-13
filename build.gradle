@@ -6,23 +6,9 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.5.30'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.5.30'
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.5.30'
-    id 'checkstyle'
+    id 'org.jlleitschuh.gradle.ktlint' version '11.3.1'
     id 'jacoco'
 }
-
-checkstyle {
-    ignoreFailures = true // 분석결과 예외가 발생하면 빌드실패 발생시키는 것을 제외
-    configFile = rootProject.file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
-    reportsDir = file("${buildDir}/checkstyle-output") // 리포트 파일이 위치할 디렉토리 지정
-    toolVersion = '10.6.0'
-}
-
-checkstyleMain {
-    reports {
-        xml.destination = file("${checkstyle.reportsDir}/checkstyle-report.xml") // 리포트 파일의 위치 및 파일명 지정
-    }
-}
-
 
 group = 'com.flab'
 version = '0.0.1-SNAPSHOT'
@@ -63,6 +49,11 @@ tasks.withType(KotlinCompile) {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+ktlint {
+    debug = true
+    verbose = true
 }
 
 // 파일이 변경되면 restart합니다
