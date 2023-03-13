@@ -22,13 +22,8 @@ jobs:
       - name: Setting Checkout
         uses: actions/checkout@v3
 
-      - name: Checkstyle
-        uses: dbelyaev/action-checkstyle@v0.5.1
-        with:
-          checkstyle_config: ${{ github.workspace }}/config/checkstyle/naver-checkstyle-rules.xml
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          level: warning
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
 
   build:
     permissions: write-all
