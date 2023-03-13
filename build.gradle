@@ -78,8 +78,8 @@ task buildAndReload {
 // 변경된 파일을 복사합니다.
 task updateLib(type: Copy) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from configurations.implementation into "libs/"
-    from configurations.implementation into "libs/"
+    from configurations.compileClasspath // compileClasspath configuration을 추가
+    into "libs/"
 }
 
 bootRun {
