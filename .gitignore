@@ -1,7 +1,6 @@
 .idea
 .gradle
 /build/
-/firebase/
 /db
 
 # Ignore Gradle GUI config
