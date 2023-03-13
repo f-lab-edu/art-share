@@ -1,4 +1,4 @@
-package com.flab.art_share.config.security
+package com.flab.artshare.config.security
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -36,6 +36,8 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         val authorizationHeader = request.getHeader("Authorization")
         return if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             authorizationHeader.substring(7)
-        } else null
+        } else {
+            null
+        }
     }
 }

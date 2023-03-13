@@ -1,6 +1,6 @@
-package com.flab.art_share.config.security
+package com.flab.artshare.config.security
 
-import com.flab.art_share.config.firebase.FirebaseConfig
+import com.flab.artshare.config.firebase.FirebaseConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-
 
 @Configuration
 @EnableWebSecurity

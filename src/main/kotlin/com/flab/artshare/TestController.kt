@@ -1,4 +1,4 @@
-package com.flab.art_share
+package com.flab.artshare
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
