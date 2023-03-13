@@ -1,21 +1,17 @@
 version: '3.8'
 services:
   firebase-emulator:
-    image: spine3/firebase-emulator
+    build:
+      context: .
+      dockerfile: dockerfile-emulator
     ports:
         - "4000:4000" # Realtime Database
         - "9099:9099" # Authentication
-    volumes:
-      - ./firebase/firebase.json:/firebase.json
-      - ./firebase/emulator-entrypoint.sh:/emulator-entrypoint.sh
-    environment:
-        GCP_PROJECT: "art-share"
-        ENABLE_UI: "true"
-    entrypoint: ["bash", "/emulator-entrypoint.sh"]
 
   app:
     build:
       context: .
+      dockerfile: dockerfile-app
     ports:
       - "8080:8080"
     volumes:
