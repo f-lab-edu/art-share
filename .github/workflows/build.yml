@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setting Checkout
+        uses: actions/checkout@v3
+
       - name: Run ktlint
         run: ./gradlew ktlintCheck
 
@@ -28,6 +31,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setting Checkout
+        uses: actions/checkout@v3
+
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
