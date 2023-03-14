@@ -15,14 +15,10 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authToken = extractAuthToken(request)
-
-        if (authToken != null) {
+        extractAuthToken(request)?.let { token ->
             try {
-                val decodedToken = firebaseAuth.verifyIdToken(authToken)
-
+                val decodedToken = firebaseAuth.verifyIdToken(token)
                 val authentication = UsernamePasswordAuthenticationToken(decodedToken.uid, null, null)
-
                 SecurityContextHolder.getContext().authentication = authentication
             } catch (e: FirebaseAuthException) {
                 logger.error("Firebase authentication failed: ${e.message}")
@@ -32,12 +28,6 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         filterChain.doFilter(request, response)
     }
 
-    private fun extractAuthToken(request: HttpServletRequest): String? {
-        val authorizationHeader = request.getHeader("Authorization")
-        return if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            authorizationHeader.substring(7)
-        } else {
-            null
-        }
-    }
+    private fun extractAuthToken(request: HttpServletRequest): String? =
+        request.getHeader("Authorization")?.takeIf { it.startsWith("Bearer ") }?.substring(7)
 }
