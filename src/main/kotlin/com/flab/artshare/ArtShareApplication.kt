@@ -1,4 +1,4 @@
-package com.flab.art_share
+package com.flab.artshare
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ArtShareApplication
 
 fun main(args: Array<String>) {
-	runApplication<ArtShareApplication>(*args)
+    runApplication<ArtShareApplication>(*args)
 }
