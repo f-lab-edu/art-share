@@ -106,7 +106,7 @@ koverReport {
 
     xml {
         onCheck = false
-        setReportFile(layout.buildDirectory.file("my-project-report/result.xml"))
+        setReportFile(file("$rootDir/build/reports/kover/report.xml")) // 수정된 부분
 
         filters {
             excludes {
