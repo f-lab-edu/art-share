@@ -35,7 +35,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle and Kover
-        run: ./gradlew build koverReport
+        run: ./gradlew build koverHtmlReport
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v2
