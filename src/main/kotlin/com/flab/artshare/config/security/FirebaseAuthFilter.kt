@@ -1,7 +1,7 @@
 package com.flab.artshare.config.security
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
@@ -15,19 +15,21 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        extractAuthToken(request)?.let { token ->
-            try {
-                val decodedToken = firebaseAuth.verifyIdToken(token)
-                val authentication = UsernamePasswordAuthenticationToken(decodedToken.uid, null, null)
-                SecurityContextHolder.getContext().authentication = authentication
-            } catch (e: FirebaseAuthException) {
-                logger.error("Firebase authentication failed: ${e.message}")
-            }
-        }
-
+        val token = extractAuthToken(request)
+        val verifiedToken = verifyToken(token)
+        updateAuthentication(verifiedToken)
         filterChain.doFilter(request, response)
     }
 
-    private fun extractAuthToken(request: HttpServletRequest): String? =
+    private fun updateAuthentication(verifiedToken: FirebaseToken) {
+        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(verifiedToken.uid, null, null)
+    }
+
+    private fun verifyToken(token: String): FirebaseToken =
+        runCatching { firebaseAuth.verifyIdToken(token) }
+            .getOrElse { throw IllegalArgumentException("Invalid token") }
+
+    private fun extractAuthToken(request: HttpServletRequest): String =
         request.getHeader("Authorization")?.takeIf { it.startsWith("Bearer ") }?.substring(7)
+            ?: throw IllegalArgumentException("Missing or invalid Authorization header")
 }
