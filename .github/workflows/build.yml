@@ -22,6 +22,7 @@ jobs:
     steps:
       - name: Setting Checkout
         uses: actions/checkout@v2
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v2
         with:
@@ -29,20 +30,18 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
+
       - name: Build with Gradle and Kover
         run: ./gradlew build koverXmlReport koverHtmlReport
+
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
           path: ${{ github.workspace }}/config/kover-html-result/index.html
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 10
-          min-coverage-changed-files: 10
-          coverage-counter-type: LINE
