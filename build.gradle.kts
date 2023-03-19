@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("org.flywaydb.flyway") version "8.3.0"
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
@@ -33,6 +34,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-runner-junit5:5.3.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
+    implementation("org.flywaydb:flyway-core")
 }
 
 tasks.withType<KotlinCompile> {
@@ -158,4 +160,9 @@ koverReport {
             }
         }
     }
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    val activeProfile = System.getProperty("spring.profiles.active")
+    systemProperty("spring.profiles.active", activeProfile)
 }
