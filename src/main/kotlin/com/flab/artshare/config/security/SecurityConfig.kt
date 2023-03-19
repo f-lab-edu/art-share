@@ -11,7 +11,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(private val firebaseConfig: FirebaseConfig) {
+class SecurityConfig(
+    private val firebaseConfig: FirebaseConfig,
+    private val unauthorizedEntryPoint: UnauthorizedEntryPoint
+) {
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -26,6 +29,9 @@ class SecurityConfig(private val firebaseConfig: FirebaseConfig) {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterBefore(FirebaseAuthFilter(firebaseConfig.firebaseAuth()), UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling()
+            .authenticationEntryPoint(unauthorizedEntryPoint)
+            .and()
             .build()
     }
 }
