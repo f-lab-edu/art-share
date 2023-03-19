@@ -36,9 +36,6 @@ jobs:
           distribution: 'temurin'
       - name: Build with Gradle and Kover
         run: ./gradlew build koverXmlReport koverHtmlReport
-      - name: Replace invalid characters in XML
-        run: |
-          sed -i 's/&/&amp;/g' ${{ github.workspace }}/config/kover-html-result/index.html
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
