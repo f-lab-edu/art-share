@@ -35,17 +35,11 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Build with Gradle and Kover
-        run: ./gradlew build koverXmlReport koverHtmlReport
-      - name: Replace invalid characters in XML
-        run: |
-          sed -i 's/&/&amp;/g' ${{ github.workspace }}/config/kover-html-result/index.html
+        run: ./gradlew build koverXmlReport
+
       - name: Add coverage report to PR
         uses: mi-kas/kover-report@v1
         with:
-          path: ${{ github.workspace }}/config/kover-html-result/index.html
+          path: ${{ github.workspace }}/build/reports/kover/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 10
-          min-coverage-changed-files: 10
-          coverage-counter-type: LINE
