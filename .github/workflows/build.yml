@@ -25,9 +25,8 @@ jobs:
                 uses: actions/cache@v2
                 with:
                     path: |
-                        ~/.gradle/caches
+                        ~/.gradle/caches/modules-2
                         ~/.gradle/wrapper
-                        ~/.gradle/build-cache
                     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
                     restore-keys: |
                         ${{ runner.os }}-gradle-
