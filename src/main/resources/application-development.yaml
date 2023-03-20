@@ -1,3 +1,0 @@
-firebase:
-  admin-sdk:
-    path: '/app/firebase/firebase-admin.json'
