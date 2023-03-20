@@ -11,12 +11,10 @@ services:
     volumes:
       - ./firebase/firebase.json:/firebase.json
       - ./firebase/emulator-entrypoint.sh:/emulator-entrypoint.sh
-
     environment:
       GCP_PROJECT: "art-share"
       ENABLE_UI: "true"
     entrypoint: [ "bash", "/emulator-entrypoint.sh" ]
-
 
   app:
     build:
@@ -26,8 +24,12 @@ services:
       - "8080:8080"
     volumes:
       - ./src:/app/src
+      - ./.gradle/caches:/root/.gradle/caches
     environment:
       - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
+      - SPRING_DATABASE_NAME=root
+      - SPRING_DATABASE_PASSWORD=password
+      - SPRING_DATABASE_URL=jdbc:mysql://mysql:3306/my_db
     depends_on:
       mysql:
         condition: service_healthy
@@ -36,7 +38,7 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: ${SPRING_DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: my_db
     volumes:
       - ./db:/var/run/mysql
