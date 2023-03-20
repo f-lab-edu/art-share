@@ -24,7 +24,7 @@ jobs:
                 with:
                     name: "firebase-admin.json"
                     json: ${{ secrets.FIREBASE_ADMIN_JSON }}
-                    dir: 'firebase/'
+                    dir: ${{ github.workspace }}/firebase/
 
             -   name: Setting Checkout
                 uses: actions/checkout@v2
