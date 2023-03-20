@@ -5,8 +5,18 @@ services:
       context: .
       dockerfile: dockerfile-emulator
     ports:
-        - "4000:4000" # Realtime Database
-        - "9099:9099" # Authentication
+      - "4000:4000" # Realtime Database
+      - "9099:9099" # Authentication
+
+    volumes:
+      - ./firebase/firebase.json:/firebase.json
+      - ./firebase/emulator-entrypoint.sh:/emulator-entrypoint.sh
+
+    environment:
+      GCP_PROJECT: "art-share"
+      ENABLE_UI: "true"
+    entrypoint: [ "bash", "/emulator-entrypoint.sh" ]
+
 
   app:
     build:
@@ -26,7 +36,7 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATABASE_PASSWORD}
       MYSQL_DATABASE: my_db
     volumes:
       - ./db:/var/run/mysql
