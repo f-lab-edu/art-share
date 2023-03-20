@@ -18,6 +18,14 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
+            -   name: create-json
+                id: create-json
+                uses: jsdaniell/create-json@v1.2.2
+                with:
+                    name: "firebase-admin.json"
+                    json: ${{ secrets.FIREBASE_ADMIN_JSON }}
+                    dir: 'firebase/'
+
             -   name: Setting Checkout
                 uses: actions/checkout@v2
 
