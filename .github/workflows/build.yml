@@ -22,9 +22,9 @@ jobs:
                 id: create-json
                 uses: jsdaniell/create-json@v1.2.2
                 with:
-                    name: "firebase-admin.json"
+                    name: firebase-admin.json
                     json: ${{ secrets.FIREBASE_ADMIN_JSON }}
-                    dir: ${{ github.workspace }}/firebase/
+                    dir: firebase/
 
             -   name: Setting Checkout
                 uses: actions/checkout@v2
