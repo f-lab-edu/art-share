@@ -22,7 +22,8 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
     }
 
     private fun updateAuthentication(verifiedToken: FirebaseToken) {
-        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(verifiedToken.uid, null, null)
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(verifiedToken.uid, null, null)
     }
 
     private fun verifyToken(token: String): FirebaseToken =
