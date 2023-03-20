@@ -32,6 +32,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<KotlinCompile> {
@@ -124,4 +126,9 @@ koverReport {
             }
         }
     }
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    val activeProfile = System.getProperty("spring.profiles.active")
+    systemProperty("spring.profiles.active", activeProfile)
 }
