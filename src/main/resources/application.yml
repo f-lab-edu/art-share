@@ -21,7 +21,7 @@ spring:
       path: /h2-console
 firebase:
     admin-sdk:
-        path: '/app/firebase/firebase-admin.json'
+        path: '${user.dir}/firebase/firebase-admin.json'
 ---
 spring:
   config:
@@ -44,4 +44,4 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 firebase:
     admin-sdk:
-        path: '/app/firebase/firebase-admin.json'
+        path: '${user.dir}/firebase/firebase-admin.json'
