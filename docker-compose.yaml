@@ -27,16 +27,15 @@ services:
           - ./.gradle/caches:/root/.gradle/caches
       environment:
           - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
-          - SPRING_DATABASE_USERNAME=root
-          - SPRING_DATABASE_PASSWORD=password
-          - SPRING_DATABASE_URL=jdbc:mariadb://mariadb:3306/my_db
+      env_file:
+          - .env
       depends_on:
           mariadb:
               condition: service_healthy
       restart: unless-stopped
 
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:10.2
     environment:
         MARIADB_ROOT_PASSWORD: password
         MARIADB_DATABASE: my_db
