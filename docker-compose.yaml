@@ -16,21 +16,25 @@ services:
     entrypoint: [ "bash", "/emulator-entrypoint.sh" ]
 
   app:
-    build:
-      context: .
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-    environment:
-      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
-    depends_on:
-      mysql:
-        condition: service_healthy
-    restart: unless-stopped
+      build:
+          context: .
+          dockerfile: dockerfile-app
+      ports:
+          - "8080:8080"
+      volumes:
+          - ./src:/app/src
+          - ./.gradle/caches:/root/.gradle/caches
+      environment:
+          - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
+      env_file:
+          - .env
+      depends_on:
+          mariadb:
+              condition: service_healthy
+      restart: unless-stopped
 
-  mysql:
-    image: mysql:8.0
+  mariadb:
+    image: mariadb:10.2
     environment:
       MYSQL_ROOT_PASSWORD: ${SPRING_DATABASE_PASSWORD}
       MYSQL_DATABASE: my_db
