@@ -2,11 +2,13 @@ spring:
   config:
     activate:
       on-profile: local
+
   datasource:
     url: "jdbc:h2:mem:my_db;MODE=MYSQL;NON_KEYWORDS=USER"
     username: "sa"
     password: ""
     driver-class-name: org.h2.Driver
+
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -34,37 +36,47 @@ springdoc:
 
   cache:
     disabled: true
+
+firebase:
+    admin-sdk:
+        path: '${user.dir}/firebase/firebase-admin.json'
 ---
 spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    url: "jdbc:mysql://localhost/library"
-    username: ${SPRING_DATABASE_NAME}
-    password: ${SPRING_DATABASE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
+    config:
+        activate:
+            on-profile: dev
 
-  # JPA
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+    datasource:
+        url: ${SPRING_DATABASE_URL}
+        username: ${SPRING_DATABASE_USERNAME}
+        password: ${SPRING_DATABASE_PASSWORD}
+        driver-class-name: org.mariadb.jdbc.Driver
+
+    flyway:
+        enabled: true
+        baseline-on-migrate: true
+
+    # JPA
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+                dialect: org.hibernate.dialect.MariaDB103Dialect
 
 springdoc:
-  api-docs:
-    path: /api-docs
+    api-docs:
+        path: /api-docs
 
-  swagger-ui:
-    path: /swagger-ui
-    display-request-duration: true
+    swagger-ui:
+        path: /swagger-ui
+        display-request-duration: true
 
-  cache:
-    disabled: true
+    cache:
+        disabled: true
+
+firebase:
+    admin-sdk:
+        path: '${user.dir}/firebase/firebase-admin.json'

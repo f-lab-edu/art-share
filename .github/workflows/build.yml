@@ -21,6 +21,14 @@ jobs:
             -   name: Setting Checkout
                 uses: actions/checkout@v2
 
+            -   name: create-json
+                id: create-json
+                uses: jsdaniell/create-json@v1.2.2
+                with:
+                    name: firebase-admin.json
+                    json: ${{ secrets.FIREBASE_ADMIN_JSON }}
+                    dir: firebase/
+
             -   name: Cache Gradle dependencies and build cache
                 uses: actions/cache@v2
                 with:

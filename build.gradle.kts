@@ -27,10 +27,12 @@ dependencies {
     implementation("com.google.firebase:firebase-admin:9.1.1")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.kotest:kotest-runner-junit5:5.3.2")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
+    testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
     implementation("org.flywaydb:flyway-core")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
 }
@@ -46,25 +48,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.register<Copy>("updateLib") {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(configurations["compileClasspath"])
-    into("libs/")
-}
-
-tasks.register("buildAndReload") {
-    group = "application"
-    description = "Builds the project and restarts the application using the run.sh script."
-
-    dependsOn("build")
-
-    mustRunAfter("build")
-
-    doLast {
-        File(".", "reload.txt").writeText("${System.currentTimeMillis()}")
-    }
-}
-
+// For ktlint
 tasks {
     // ktlint check task
     val ktlint by creating {
@@ -127,7 +111,33 @@ koverReport {
     }
 }
 
+// Inject profiles active
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     val activeProfile = System.getProperty("spring.profiles.active")
     systemProperty("spring.profiles.active", activeProfile)
+}
+
+// Setting for development env
+tasks.register<Copy>("updateLib") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(configurations["compileClasspath"])
+    into("libs/")
+}
+
+tasks.register("buildAndReload") {
+    group = "application"
+    description = "Builds the project and restarts the application using the run.sh script."
+
+    doFirst {
+        project.exec {
+            commandLine(
+                "bash", "-c",
+                "./gradlew build --build-cache --continuous -PskipDownload=true --exclude-task test "
+            )
+        }
+    }
+
+    doLast {
+        File(".", "reload.txt").writeText("${System.currentTimeMillis()}")
+    }
 }
