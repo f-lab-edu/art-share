@@ -10,15 +10,16 @@ import org.springframework.context.annotation.Configuration
 class SwaggerConfig {
     @Bean
     fun publicApi() = GroupedOpenApi.builder()
-            .group("v1-definition")
-            .pathsToMatch("/api/**")
-            .build();
+        .group("v1-definition")
+        .pathsToMatch("/api/**")
+        .build()
 
     @Bean
     fun artShareOpenAPI() =
         OpenAPI()
             .info(
                 Info().title("Art Share API")
-                .description("Art Share API 명세서입니다.")
-                .version("v1"))
+                    .description("Art Share API 명세서입니다.")
+                    .version("v1")
+            )
 }
