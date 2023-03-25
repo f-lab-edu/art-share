@@ -17,38 +17,39 @@ services:
     entrypoint: [ "bash", "/emulator-entrypoint.sh" ]
 
   app:
-    build:
-      context: .
-      dockerfile: dockerfile-app
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./.gradle/caches:/root/.gradle/caches
-    environment:
-      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
-      - SPRING_DATABASE_NAME=root
-      - SPRING_DATABASE_PASSWORD=password
-      - SPRING_DATABASE_URL=jdbc:mysql://mysql:3306/my_db
-    depends_on:
-      mysql:
-        condition: service_healthy
-    restart: unless-stopped
+      build:
+          context: .
+          dockerfile: dockerfile-app
+      ports:
+          - "8080:8080"
+      volumes:
+          - ./src:/app/src
+          - ./.gradle/caches:/root/.gradle/caches
+      environment:
+          - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulator:9099
+          - SPRING_DATABASE_USERNAME=root
+          - SPRING_DATABASE_PASSWORD=password
+          - SPRING_DATABASE_URL=jdbc:mariadb://mariadb:3306/my_db
+      depends_on:
+          mariadb:
+              condition: service_healthy
+      restart: unless-stopped
 
-  mysql:
-    image: mysql:8.0
+  mariadb:
+    image: mariadb:10.5
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: my_db
+        MARIADB_ROOT_PASSWORD: password
+        MARIADB_DATABASE: my_db
     volumes:
-      - ./db:/var/run/mysql
+        - ./db:/var/lib/mysql
     ports:
-      - "13306:3306"
+        - "13306:3306"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3306" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+        test: ["CMD-SHELL", "mysqladmin ping -h localhost --user=root --password=password --silent"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+
 
 networks:
   my-network:
