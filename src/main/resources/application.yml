@@ -53,6 +53,7 @@ cloud:
         s3:
             endpoint: https://kr.object.ncloudstorage.com
             bucket: artshare
+
 ---
 spring:
     config:
