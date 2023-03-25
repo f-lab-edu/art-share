@@ -40,6 +40,19 @@ springdoc:
 firebase:
     admin-sdk:
         path: '${user.dir}/firebase/firebase-admin.json'
+
+cloud:
+    aws:
+        credentials:
+            access-key: ${NAVER_CLOUD_ACCESS_KEY}
+            secret-key: ${NAVER_CLOUD_SECRET_KEY}
+        stack:
+            auto: false
+        region:
+            static: kr-standard
+        s3:
+            endpoint: https://kr.object.ncloudstorage.com
+            bucket: artshare
 ---
 spring:
     config:
@@ -74,9 +87,19 @@ springdoc:
         path: /swagger-ui
         display-request-duration: true
 
-    cache:
-        disabled: true
-
 firebase:
     admin-sdk:
         path: '${user.dir}/firebase/firebase-admin.json'
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${NAVER_CLOUD_ACCESS_KEY}
+      secret-key: ${NAVER_CLOUD_SECRET_KEY}
+    stack:
+      auto: false
+    region:
+      static: kr-standard
+    s3:
+      endpoint: https://kr.object.ncloudstorage.com
+      bucket: artshare
