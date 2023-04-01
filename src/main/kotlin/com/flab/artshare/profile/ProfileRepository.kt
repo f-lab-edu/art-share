@@ -7,4 +7,5 @@ interface ProfileRepository : JpaRepository<Profile, Long> {
     fun existsByDisplayNameOrAbout(displayName: String, about: String): Boolean
     fun existsByUid(uid: String): Boolean
     fun findByUid(uid: String): Optional<Profile>
+    fun deleteByUid(uid: String)
 }

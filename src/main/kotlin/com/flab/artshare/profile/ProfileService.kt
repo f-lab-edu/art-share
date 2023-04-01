@@ -62,4 +62,6 @@ class ProfileService(
 
         return UpdateProfileRes(profile)
     }
+
+    fun deleteProfile(uid: String) = profileRepo.deleteByUid(uid)
 }

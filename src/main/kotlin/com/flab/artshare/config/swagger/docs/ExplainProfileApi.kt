@@ -72,4 +72,21 @@ interface ExplainProfileApi {
         @Parameter(description = "User ID") @AuthenticationPrincipal uid: String,
         @Parameter(description = "Profile Info") @ModelAttribute req: UpdateProfileReq
     ): ResponseEntity<UpdateProfileRes>
+
+    @Operation(summary = "Delete User Profile")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "Success",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                    )
+                ]
+            ),
+        ]
+    )
+    fun deleteProfile(
+        @Parameter(description = "User ID") @AuthenticationPrincipal uid: String
+    ): ResponseEntity<Unit>
 }

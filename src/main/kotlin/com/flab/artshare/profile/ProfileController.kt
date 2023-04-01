@@ -17,6 +17,7 @@ class ProfileController(private val profileService: ProfileService) : ExplainPro
         val result = this.profileService.createProfile(uid, req)
         return ResponseEntity(result, HttpStatus.CREATED)
     }
+
     @GetMapping("/me")
     override fun readProfile(@AuthenticationPrincipal uid: String): ResponseEntity<ReadProfileRes> {
         val result = this.profileService.findProfile(uid)
@@ -28,5 +29,11 @@ class ProfileController(private val profileService: ProfileService) : ExplainPro
                                @ModelAttribute req: UpdateProfileReq): ResponseEntity<UpdateProfileRes> {
         val result = this.profileService.updateProfile(uid, req)
         return ResponseEntity(result, HttpStatus.OK)
+    }
+
+    @DeleteMapping("/me")
+    override fun deleteProfile(@AuthenticationPrincipal uid: String): ResponseEntity<Unit> {
+        this.profileService.deleteProfile(uid)
+        return ResponseEntity(HttpStatus.OK)
     }
 }
