@@ -111,34 +111,3 @@ koverReport {
         }
     }
 }
-
-// Inject profiles active
-tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
-    val activeProfile = System.getProperty("spring.profiles.active")
-    systemProperty("spring.profiles.active", activeProfile)
-}
-
-// Setting for development env
-tasks.register<Copy>("updateLib") {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(configurations["compileClasspath"])
-    into("libs/")
-}
-
-tasks.register("buildAndReload") {
-    group = "application"
-    description = "Builds the project and restarts the application using the run.sh script."
-
-    doFirst {
-        project.exec {
-            commandLine(
-                "bash", "-c",
-                "./gradlew build --build-cache --continuous -PskipDownload=true --exclude-task test "
-            )
-        }
-    }
-
-    doLast {
-        File(".", "reload.txt").writeText("${System.currentTimeMillis()}")
-    }
-}
