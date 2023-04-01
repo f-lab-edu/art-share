@@ -2,6 +2,7 @@ package com.flab.artshare.common.dto
 
 import com.flab.artshare.profile.Profile
 import org.springframework.web.multipart.MultipartFile
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
@@ -17,6 +18,7 @@ data class CreateProfileReq(
     )
     val about: String,
 
+    @field:NotEmpty
     val profileImg: MultipartFile
 ) {
     fun toEntity(uid: String, imgPath: String): Profile {
