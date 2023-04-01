@@ -43,8 +43,8 @@ firebase:
 cloud:
     aws:
         credentials:
-            access-key: ${NAVER_CLOUD_ACCESS_KEY}
-            secret-key: ${NAVER_CLOUD_SECRET_KEY}
+            access-key: "dummy_key"
+            secret-key: "dummy_key"
         stack:
             auto: false
         region:
