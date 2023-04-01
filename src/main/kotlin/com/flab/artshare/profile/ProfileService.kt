@@ -6,6 +6,9 @@ import com.flab.artshare.common.dto.ReadProfileRes
 import com.flab.artshare.storage.StorageService
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
+import org.springframework.beans.BeanUtils
+import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 @Service
 class ProfileService(
@@ -17,9 +20,9 @@ class ProfileService(
 
         checkProfileExists(uid)
 
-        val imgPath = storageService.uploadImage(req.profileImg)
+        val imgPath = uploadImg(req.profileImg)
 
-        val profile = profileRepo.save(req.toEntity(uid, imgPath))
+        val profile = profileRepo.save(req.toEntity(uid, imgPath!!))
 
         return CreateProfileRes(profile)
     }
@@ -34,10 +37,10 @@ class ProfileService(
             throw IllegalArgumentException("Profile with the provided display name or about already exists.")
     }
 
-    fun findProfile(uid: String): ReadProfileRes{
-        val profile = profileRepo.findByUid(uid)
-            .orElseThrow { NullPointerException("Profile with the provided uid is not exists") }
-
-        return ReadProfileRes(profile)
+    private fun uploadImg(profileImg: MultipartFile?): String? {
+        profileImg?.let { img ->
+            return storageService.uploadImage(img)
+        }
+        return null
     }
 }
