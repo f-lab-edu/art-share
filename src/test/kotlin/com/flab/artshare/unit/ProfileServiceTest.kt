@@ -99,8 +99,8 @@ class ReadProfileTest : BehaviorSpec({
         `when`("I read not exists user profile") {
             every { profileRepo.findByUid(any()) } returns Optional.empty()
 
-            then("throw IllegalStateException") {
-                shouldThrow<IllegalStateException> {
+            then("throw NullPointerException") {
+                shouldThrow<NullPointerException> {
                     profileService.findProfile(uid)
                 }
             }

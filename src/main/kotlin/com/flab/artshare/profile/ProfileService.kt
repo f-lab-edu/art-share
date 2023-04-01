@@ -36,7 +36,7 @@ class ProfileService(
 
     fun findProfile(uid: String): ReadProfileRes{
         val profile = profileRepo.findByUid(uid)
-            .orElseThrow { IllegalStateException("Profile with the provided uid is not exists") }
+            .orElseThrow { NullPointerException("Profile with the provided uid is not exists") }
 
         return ReadProfileRes(profile)
     }
