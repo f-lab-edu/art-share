@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/profile")
-class ProfileController(
-    private val profileService: ProfileService
-) : ExplainProfileApi {
+class ProfileController(private val profileService: ProfileService) : ExplainProfileApi {
     @PostMapping("/me")
     override fun createProfile(
         @AuthenticationPrincipal uid: String,

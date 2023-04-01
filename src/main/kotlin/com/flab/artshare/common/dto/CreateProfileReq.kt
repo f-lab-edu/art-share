@@ -11,7 +11,10 @@ data class CreateProfileReq(
     val displayName: String,
 
     @field:Size(max = 50, message = "About must be 50 characters or less")
-    @field:Pattern(regexp = "^[가-힣a-zA-Z0-9\\p{Punct}]*$", message = "About must contain only Korean, English characters, numbers and punctuation")
+    @field:Pattern(
+        regexp = "^[가-힣a-zA-Z0-9\\p{Punct}]*$",
+        message = "About must contain only Korean, English characters, numbers and punctuation"
+    )
     val about: String,
 
     val profileImg: MultipartFile
