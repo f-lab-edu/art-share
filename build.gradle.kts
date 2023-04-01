@@ -125,3 +125,8 @@ koverReport {
         }
     }
 }
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    val activeProfile = System.getProperty("spring.profiles.active")
+    systemProperty("spring.profiles.active", activeProfile)
+}
