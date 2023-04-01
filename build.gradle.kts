@@ -37,7 +37,7 @@ dependencies {
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
     implementation("com.amazonaws:aws-java-sdk-s3:1.12.435")
-    testImplementation("io.mockk:mockk:1.4.1")
+    testImplementation("io.mockk:mockk:1.13.4")
 }
 
 tasks.withType<KotlinCompile> {

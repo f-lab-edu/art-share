@@ -25,7 +25,7 @@ class ProfileService(
 
     private fun checkProfileExists(uid: String) {
         if (profileRepo.existsByUid(uid))
-            throw IllegalArgumentException("Profile with the provided uid already exists.")
+            throw IllegalStateException("Profile with the provided uid already exists.")
     }
 
     private fun validateProfileRequest(req: CreateProfileReq) {

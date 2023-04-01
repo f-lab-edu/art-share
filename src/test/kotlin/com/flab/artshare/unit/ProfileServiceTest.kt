@@ -13,9 +13,10 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockk
+import java.util.*
 
 @Test()
-class ProfileServiceTest : BehaviorSpec({
+class CreateProfileTest : BehaviorSpec({
     val storageService = mockk<StorageService>()
     val profileRepo = mockk<ProfileRepository>()
     val profileService = ProfileService(storageService, profileRepo)
@@ -44,12 +45,8 @@ class ProfileServiceTest : BehaviorSpec({
                 profile.imgPath shouldNotBe null
             }
         }
-    }
 
-    given("a already exists name or about") {
-        val request = CreateProfileReq("John", "Hi! Nice to meet you bro!", multipartFile)
-
-        `when`("I create user profile") {
+        `when`("I create user profile with wrong inputs") {
 
             every { storageService.uploadImage(any()) } returns "mock-url"
             every { profileRepo.existsByUid(any()) } returns false
@@ -61,19 +58,50 @@ class ProfileServiceTest : BehaviorSpec({
                 }
             }
         }
-    }
 
-    given("a already exists profile") {
-        val request = CreateProfileReq("John", "Hi! Nice to meet you bro!", multipartFile)
-
-        `when`("I create user profile") {
+        `when`("I create exists user profile") {
 
             every { storageService.uploadImage(any()) } returns "mock-url"
             every { profileRepo.existsByUid(any()) } returns true
 
-            then("throw IllegalArgumentException") {
-                shouldThrow<IllegalArgumentException> {
+            then("throw IllegalStateException") {
+                shouldThrow<IllegalStateException> {
                     profileService.createProfile(uid, request)
+                }
+            }
+        }
+    }
+})
+
+@Test()
+class ReadProfileTest : BehaviorSpec({
+    val storageService = mockk<StorageService>()
+    val profileRepo = mockk<ProfileRepository>()
+    val profileService = ProfileService(storageService, profileRepo)
+
+    val uid = "test-uid"
+
+    given("a read profile request") {
+        `when`("I read user profile successfully") {
+            val expected = Profile(1L, uid, "John", "Hi! Nice to meet you bro!", "")
+            every { profileRepo.findById(any()) } returns Optional.of(expected)
+
+            val profile = profileService.findProfile(uid)
+
+            then("I should receive the created profile") {
+                profile shouldNotBe null
+                profile.displayName shouldBe expected.displayName
+                profile.about shouldBe expected.about
+                profile.imgPath shouldNotBe null
+            }
+        }
+
+        `when`("I read not exists user profile") {
+            every { profileRepo.findById(any()) } returns Optional.empty()
+
+            then("throw IllegalStateException") {
+                shouldThrow<IllegalStateException> {
+                    profileService.profileService.findProfile(uid)
                 }
             }
         }
