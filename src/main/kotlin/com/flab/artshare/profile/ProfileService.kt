@@ -58,10 +58,17 @@ class ProfileService(
 
         copyNonNullProperties(req.toEntity(imgPath), profile)
 
+        println(profile)
+
+        println(req)
+
         profileRepo.save(profile)
 
         return UpdateProfileRes(profile)
     }
 
-    fun deleteProfile(uid: String) = profileRepo.deleteByUid(uid)
+    fun deleteProfile(uid: String) {
+        val profile = profileRepo.findByUid(uid)
+        profile.get()?.let { profileRepo.delete(it) }
+    }
 }
