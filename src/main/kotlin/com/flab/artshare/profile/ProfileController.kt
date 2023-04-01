@@ -20,9 +20,4 @@ class ProfileController(private val profileService: ProfileService) : ExplainPro
         val result = this.profileService.createProfile(uid, req)
         return ResponseEntity(result, HttpStatus.CREATED)
     }
-    @GetMapping("/me")
-    override fun readProfile(@AuthenticationPrincipal uid: String): ResponseEntity<ReadProfileRes> {
-        val result = this.profileService.findProfile(uid)
-        return ResponseEntity(result, HttpStatus.OK)
-    }
 }

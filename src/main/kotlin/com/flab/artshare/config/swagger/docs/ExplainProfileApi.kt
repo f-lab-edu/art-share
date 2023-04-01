@@ -34,23 +34,4 @@ interface ExplainProfileApi {
         @Parameter(description = "User ID") @AuthenticationPrincipal uid: String,
         @Parameter(description = "Profile Info") @ModelAttribute req: CreateProfileReq
     ): ResponseEntity<CreateProfileRes>
-
-    @Operation(summary = "Read User Profile")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200", description = "Success",
-                content = [
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = ReadProfileRes::class)
-                    )
-                ]
-            ),
-            ApiResponse(responseCode = "404", description = "Not Found User Profile", content = [Content()])
-        ]
-    )
-    fun readProfile(
-        @Parameter(description = "User ID") @AuthenticationPrincipal uid: String
-    ): ResponseEntity<ReadProfileRes>
 }
