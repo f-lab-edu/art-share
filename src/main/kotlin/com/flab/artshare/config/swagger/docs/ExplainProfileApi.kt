@@ -1,8 +1,6 @@
 package com.flab.artshare.config.swagger.docs
 
-import com.flab.artshare.common.dto.CreateProfileReq
-import com.flab.artshare.common.dto.CreateProfileRes
-import com.flab.artshare.common.dto.ReadProfileRes
+import com.flab.artshare.common.dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -53,4 +51,25 @@ interface ExplainProfileApi {
     fun readProfile(
         @Parameter(description = "User ID") @AuthenticationPrincipal uid: String
     ): ResponseEntity<ReadProfileRes>
+
+    @Operation(summary = "Read User Profile")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "Success",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = UpdateProfileRes::class)
+                    )
+                ]
+            ),
+            ApiResponse(responseCode = "400", description = "Bad Request", content = [Content()]),
+            ApiResponse(responseCode = "404", description = "Not Found User Profile", content = [Content()])
+        ]
+    )
+    fun updateProfile(
+        @Parameter(description = "User ID") @AuthenticationPrincipal uid: String,
+        @Parameter(description = "Profile Info") @ModelAttribute req: UpdateProfileReq
+    ): ResponseEntity<UpdateProfileRes>
 }

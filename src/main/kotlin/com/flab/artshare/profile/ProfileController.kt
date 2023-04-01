@@ -1,8 +1,6 @@
 package com.flab.artshare.profile
 
-import com.flab.artshare.common.dto.CreateProfileReq
-import com.flab.artshare.common.dto.CreateProfileRes
-import com.flab.artshare.common.dto.ReadProfileRes
+import com.flab.artshare.common.dto.*
 import com.flab.artshare.config.swagger.docs.ExplainProfileApi
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,9 +11,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/profile")
 class ProfileController(private val profileService: ProfileService) : ExplainProfileApi {
     @PostMapping("/me")
-    override fun createProfile(
-        @AuthenticationPrincipal uid: String,
-        @ModelAttribute req: CreateProfileReq
+    override fun createProfile( @AuthenticationPrincipal uid: String,
+                                @ModelAttribute req: CreateProfileReq
     ): ResponseEntity<CreateProfileRes> {
         val result = this.profileService.createProfile(uid, req)
         return ResponseEntity(result, HttpStatus.CREATED)
@@ -23,6 +20,13 @@ class ProfileController(private val profileService: ProfileService) : ExplainPro
     @GetMapping("/me")
     override fun readProfile(@AuthenticationPrincipal uid: String): ResponseEntity<ReadProfileRes> {
         val result = this.profileService.findProfile(uid)
+        return ResponseEntity(result, HttpStatus.OK)
+    }
+
+    @PutMapping("/me")
+    override fun updateProfile(@AuthenticationPrincipal uid: String,
+                               @ModelAttribute req: UpdateProfileReq): ResponseEntity<UpdateProfileRes> {
+        val result = this.profileService.updateProfile(uid, req)
         return ResponseEntity(result, HttpStatus.OK)
     }
 }
