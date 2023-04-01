@@ -15,9 +15,9 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = extractAuthToken(request)?.let {
-            val verifiedToken = verifyToken(it)
-            updateAuthentication(verifiedToken)
+        extractAuthToken(request)?.let {
+            val token = verifyToken(it)
+            updateAuthentication(token)
         }
         filterChain.doFilter(request, response)
     }
