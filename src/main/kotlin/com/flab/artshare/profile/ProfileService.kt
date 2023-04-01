@@ -1,12 +1,12 @@
 package com.flab.artshare.profile
 
-import com.flab.artshare.common.dto.CreateProfileReq
-import com.flab.artshare.common.dto.CreateProfileRes
-import com.flab.artshare.common.dto.ReadProfileRes
+import com.flab.artshare.common.dto.*
+import com.flab.artshare.common.util.copyNonNullProperties
 import com.flab.artshare.storage.StorageService
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 import org.springframework.beans.BeanUtils
+import org.springframework.beans.BeanWrapperImpl
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
@@ -48,5 +48,18 @@ class ProfileService(
         val profile = profileRepo.findByUid(uid)
             .orElseThrow { IllegalStateException("Profile with the provided uid is not exists") }
         return ReadProfileRes(profile)
+    }
+
+    fun updateProfile(uid: String, req: UpdateProfileReq): UpdateProfileRes{
+        val profile = profileRepo.findByUid(uid)
+            .orElseThrow { NullPointerException("Profile with the provided uid is not exists") }
+
+        val imgPath = uploadImg(req.profileImg)
+
+        copyNonNullProperties(req.toEntity(imgPath), profile)
+
+        profileRepo.save(profile)
+
+        return UpdateProfileRes(profile)
     }
 }
