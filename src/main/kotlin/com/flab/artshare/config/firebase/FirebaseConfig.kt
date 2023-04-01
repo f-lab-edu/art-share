@@ -18,7 +18,7 @@ class FirebaseConfig {
     @Value("\${firebase.admin-sdk.path}")
     private lateinit var firebaseAdminSdkPath: String
 
-    @Value("\${spring.profiles.active}")
+    @Value("\${spring.config.activate.on-profile}")
     private lateinit var activeProfile: String
 
     @Bean

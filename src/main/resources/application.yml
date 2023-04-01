@@ -21,7 +21,7 @@ spring:
       path: /h2-console
 firebase:
     admin-sdk:
-        path: '${user.dir}/firebase/firebase-admin.json'
+        path: 'dummy_path'
 ---
 spring:
     config:
