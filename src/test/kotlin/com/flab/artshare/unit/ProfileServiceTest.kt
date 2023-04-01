@@ -13,6 +13,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockk
+import java.util.*
 
 @Test()
 class CreateProfileTest : BehaviorSpec({
@@ -66,6 +67,41 @@ class CreateProfileTest : BehaviorSpec({
             then("throw IllegalStateException") {
                 shouldThrow<IllegalStateException> {
                     profileService.createProfile(uid, request)
+                }
+            }
+        }
+    }
+})
+
+@Test()
+class ReadProfileTest : BehaviorSpec({
+    val storageService = mockk<StorageService>()
+    val profileRepo = mockk<ProfileRepository>()
+    val profileService = ProfileService(storageService, profileRepo)
+
+    val uid = "test-uid"
+
+    given("a read profile request") {
+        `when`("I read user profile successfully") {
+            val expected = Profile(1L, uid, "John", "Hi! Nice to meet you bro!", "")
+            every { profileRepo.findByUid(any()) } returns Optional.of(expected)
+
+            val profile = profileService.findProfile(uid)
+
+            then("I should receive the created profile") {
+                profile shouldNotBe null
+                profile.displayName shouldBe expected.displayName
+                profile.about shouldBe expected.about
+                profile.imgPath shouldNotBe null
+            }
+        }
+
+        `when`("I read not exists user profile") {
+            every { profileRepo.findByUid(any()) } returns Optional.empty()
+
+            then("throw NullPointerException") {
+                shouldThrow<NullPointerException> {
+                    profileService.findProfile(uid)
                 }
             }
         }
