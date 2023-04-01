@@ -20,6 +20,7 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .authorizeRequests()
+            .antMatchers("/swagger*/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .httpBasic().disable()

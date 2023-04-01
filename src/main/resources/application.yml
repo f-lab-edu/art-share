@@ -39,8 +39,7 @@ springdoc:
 
 firebase:
     admin-sdk:
-        path: '${user.dir}/firebase/firebase-admin.json'
-
+        path: 'dummy_path'
 cloud:
     aws:
         credentials:
@@ -55,29 +54,29 @@ cloud:
             bucket: artshare
 ---
 spring:
-    config:
-        activate:
-            on-profile: dev
+  config:
+    activate:
+      on-profile: dev
 
-    datasource:
-        url: ${SPRING_DATABASE_URL}
-        username: ${SPRING_DATABASE_USERNAME}
-        password: ${SPRING_DATABASE_PASSWORD}
-        driver-class-name: org.mariadb.jdbc.Driver
+  datasource:
+    url: "jdbc:mysql://localhost/library"
+    username: ${SPRING_DATABASE_NAME}
+    password: ${SPRING_DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-    flyway:
-        enabled: true
-        baseline-on-migrate: true
 
-    # JPA
-    jpa:
-        hibernate:
-            ddl-auto: none
-        properties:
-            hibernate:
-                show_sql: true
-                format_sql: true
-                dialect: org.hibernate.dialect.MariaDB103Dialect
+  flyway:
+      enabled: true
+      baseline-on-migrate: true
+
+  jpa:
+      hibernate:
+          ddl-auto: create
+      properties:
+          hibernate:
+              show_sql: true
+              format_sql: true
+              dialect: org.hibernate.dialect.H2Dialect
 
 springdoc:
     api-docs:

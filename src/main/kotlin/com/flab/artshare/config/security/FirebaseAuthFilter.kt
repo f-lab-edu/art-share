@@ -15,9 +15,10 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = extractAuthToken(request)
-        val verifiedToken = verifyToken(token)
-        updateAuthentication(verifiedToken)
+        extractAuthToken(request)?.let {
+            val token = verifyToken(it)
+            updateAuthentication(token)
+        }
         filterChain.doFilter(request, response)
     }
 
@@ -30,12 +31,6 @@ class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerReques
         runCatching { firebaseAuth.verifyIdToken(token) }
             .getOrElse { throw IllegalArgumentException("Invalid token") }
 
-    private fun extractAuthToken(request: HttpServletRequest): String {
-        val authHeader = request.getHeader("Authorization")
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7)
-        } else {
-            throw IllegalArgumentException("Missing or invalid Authorization header")
-        }
-    }
+    private fun extractAuthToken(request: HttpServletRequest): String? =
+        request.getHeader("Authorization")?.takeIf { it.startsWith("Bearer ") }?.substring(7)
 }
