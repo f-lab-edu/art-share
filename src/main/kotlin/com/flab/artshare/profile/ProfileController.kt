@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/profile")
 class ProfileController(private val profileService: ProfileService) : ExplainProfileApi {
     @PostMapping("/me")
-    override fun createProfile(
-        @AuthenticationPrincipal uid: String,
-        @ModelAttribute req: CreateProfileReq
+    override fun createProfile( @AuthenticationPrincipal uid: String,
+                                @ModelAttribute req: CreateProfileReq
     ): ResponseEntity<CreateProfileRes> {
         val result = this.profileService.createProfile(uid, req)
         return ResponseEntity(result, HttpStatus.CREATED)
