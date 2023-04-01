@@ -1,0 +1,9 @@
+FROM spine3/firebase-emulator
+
+RUN apk update && apk add curl
+
+COPY ./firebase /firebase
+
+RUN chmod +x /firebase/emulator-entrypoint.sh
+
+ENTRYPOINT ["/firebase/emulator-entrypoint.sh"]
