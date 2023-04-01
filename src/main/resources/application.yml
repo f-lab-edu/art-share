@@ -7,6 +7,7 @@ spring:
     username: "sa"
     password: ""
     driver-class-name: org.h2.Driver
+
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -34,29 +35,35 @@ springdoc:
 
   cache:
     disabled: true
+
+firebase:
+    admin-sdk:
+        path: 'dummy_path'
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
   datasource:
     url: "jdbc:mysql://localhost/library"
     username: ${SPRING_DATABASE_NAME}
     password: ${SPRING_DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
 
-  # JPA
+
+  flyway:
+      enabled: true
+      baseline-on-migrate: true
+
   jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+          ddl-auto: create
+      properties:
+          hibernate:
+              show_sql: true
+              format_sql: true
+              dialect: org.hibernate.dialect.H2Dialect
 
 springdoc:
   api-docs:
@@ -68,3 +75,7 @@ springdoc:
 
   cache:
     disabled: true
+
+firebase:
+    admin-sdk:
+        path: '${user.dir}/firebase/firebase-admin.json'
