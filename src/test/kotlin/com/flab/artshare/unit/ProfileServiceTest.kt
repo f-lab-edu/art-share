@@ -84,7 +84,7 @@ class ReadProfileTest : BehaviorSpec({
     given("a read profile request") {
         `when`("I read user profile successfully") {
             val expected = Profile(1L, uid, "John", "Hi! Nice to meet you bro!", "")
-            every { profileRepo.findById(any()) } returns Optional.of(expected)
+            every { profileRepo.findByUid(any()) } returns Optional.of(expected)
 
             val profile = profileService.findProfile(uid)
 
@@ -97,11 +97,11 @@ class ReadProfileTest : BehaviorSpec({
         }
 
         `when`("I read not exists user profile") {
-            every { profileRepo.findById(any()) } returns Optional.empty()
+            every { profileRepo.findByUid(any()) } returns Optional.empty()
 
             then("throw IllegalStateException") {
                 shouldThrow<IllegalStateException> {
-                    profileService.profileService.findProfile(uid)
+                    profileService.findProfile(uid)
                 }
             }
         }
