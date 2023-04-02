@@ -1,0 +1,50 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: "jdbc:h2:mem:my_db;MODE=MYSQL;NON_KEYWORDS=USER"
+    username: "sa"
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+firebase:
+    use_emulator: true
+    admin-sdk-path: 'dummy_path'
+
+---
+spring:
+    config:
+        activate:
+            on-profile: dev
+    datasource:
+        url: ${SPRING_DATABASE_URL}
+        username: ${SPRING_DATABASE_USERNAME}
+        password: ${SPRING_DATABASE_PASSWORD}
+        driver-class-name: org.mariadb.jdbc.Driver
+
+    # JPA
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+                dialect: org.hibernate.dialect.MariaDB103Dialect
+
+firebase:
+    use_emulator: true
+    admin-sdk-path: '${user.dir}/firebase/firebase-admin.json'
