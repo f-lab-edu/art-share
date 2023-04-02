@@ -28,7 +28,10 @@ class SecurityConfig(
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .addFilterBefore(FirebaseAuthFilter(firebaseConfig.firebaseAuth()), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(
+                FirebaseAuthFilter(firebaseConfig.firebaseAuth()),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
             .exceptionHandling()
             .authenticationEntryPoint(unauthorizedEntryPoint)
             .and()
