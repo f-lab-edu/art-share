@@ -26,9 +26,6 @@ class SecurityConfig(
             httpBasic {
                 disable()
             }
-            formLogin {
-                permitAll()
-            }
             cors {
                 disable()
             }
