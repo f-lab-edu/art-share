@@ -19,11 +19,11 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
 firebase:
-    emulator:
-        use_emulator: true
-    admin-sdk:
-        path: 'dummy_path'
+    use_emulator: true
+    admin-sdk-path: 'dummy_path'
+
 ---
 spring:
     config:
@@ -46,7 +46,5 @@ spring:
                 dialect: org.hibernate.dialect.MariaDB103Dialect
 
 firebase:
-    emulator:
-        use_emulator: true
-    admin-sdk:
-        path: '${user.dir}/firebase/firebase-admin.json'
+    use_emulator: true
+    admin-sdk-path: '${user.dir}/firebase/firebase-admin.json'
