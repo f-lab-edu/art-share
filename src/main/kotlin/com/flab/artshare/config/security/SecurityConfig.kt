@@ -1,6 +1,5 @@
 package com.flab.artshare.config.security
 
-import com.flab.artshare.config.firebase.FirebaseConfig
 import com.flab.artshare.config.firebase.FirebaseInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

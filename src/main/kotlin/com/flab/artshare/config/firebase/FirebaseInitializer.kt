@@ -12,7 +12,7 @@ import java.io.FileInputStream
 import java.io.IOException
 
 @Configuration
-class FirebaseInitializer(private val config : FirebaseConfig) {
+class FirebaseInitializer(private val config: FirebaseConfig) {
 
     @Bean
     @Throws(IOException::class)
