@@ -39,7 +39,7 @@ class FirebaseConfig {
     }
 
     fun getCredential(): GoogleCredentials {
-        return if (activeProfile == "local")
+        return if (activeProfile == "local" || activeProfile == "test")
             EmulatorCredentials()
         else {
             val file = FileInputStream(File(firebaseAdminSdkPath))
