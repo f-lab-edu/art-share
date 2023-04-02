@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import kotlin.properties.Delegates
 
 @Configuration
 class FirebaseConfig {
@@ -18,8 +19,8 @@ class FirebaseConfig {
     @Value("\${firebase.admin-sdk.path}")
     private lateinit var firebaseAdminSdkPath: String
 
-    @Value("\${spring.config.activate.on-profile}")
-    private lateinit var activeProfile: String
+    @Value("\${firebase.emulator.use_emulator}")
+    private var useEmulator :Boolean = true
 
     @Bean
     @Throws(IOException::class)
@@ -39,7 +40,7 @@ class FirebaseConfig {
     }
 
     fun getCredential(): GoogleCredentials {
-        return if (activeProfile == "local" || activeProfile == "test")
+        return if (useEmulator)
             EmulatorCredentials()
         else {
             val file = FileInputStream(File(firebaseAdminSdkPath))
