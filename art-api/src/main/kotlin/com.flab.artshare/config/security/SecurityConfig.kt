@@ -14,7 +14,7 @@ import org.springframework.security.config.web.servlet.invoke
 @EnableWebSecurity
 class SecurityConfig(
     private val authService: AuthService,
-    private val unauthorizedEntryPoint: UnauthorizedEntryPoint
+    private val unauthorizedEntryPoint: UnauthorizedEntryPoint,
 ) {
     @Bean
     @Throws(Exception::class)
@@ -36,7 +36,7 @@ class SecurityConfig(
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             addFilterBefore<UsernamePasswordAuthenticationFilter>(
-                JwtAuthFilter(authService)
+                JwtAuthFilter(authService),
             )
             exceptionHandling {
                 authenticationEntryPoint = unauthorizedEntryPoint

@@ -33,9 +33,9 @@ class FirebaseInitializer(private val config: FirebaseConfig) {
 
     fun getCredential(): GoogleCredentials {
         println(config)
-        return if (config.useEmulator)
+        return if (config.useEmulator) {
             EmulatorCredentials()
-        else {
+        } else {
             val file = FileInputStream(File(config.adminSdkPath))
             GoogleCredentials.fromStream(file)
         }

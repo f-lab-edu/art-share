@@ -6,9 +6,9 @@ plugins {
     id("org.springframework.boot") version "2.7.9"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     id("org.flywaydb.flyway") version "8.4.1" apply false
     kotlin("plugin.jpa") version "1.6.21" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "11.2.0" // 추가!!
 }
 
 allprojects {
@@ -54,23 +54,12 @@ subprojects {
         useJUnitPlatform()
     }
 
-    // For ktlint
-    tasks {
-        // ktlint check task
-        val ktlint by creating {
-            group = "verification"
-            description = "Check Kotlin code style."
-            inputs.files(project.files("**/*.kt"))
-            doLast {
-                project.exec {
-                    commandLine("bash", "-c", "./gradlew ktlintCheck")
-                }
-            }
-        }
+    ktlint {
+        ignoreFailures.set(false)
 
-        // always run ktlint check task before any other task
-        val build by getting {
-            dependsOn(ktlint)
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
         }
     }
 

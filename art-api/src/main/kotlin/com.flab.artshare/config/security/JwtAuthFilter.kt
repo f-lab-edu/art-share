@@ -12,7 +12,7 @@ class JwtAuthFilter(private val authService: AuthService) : OncePerRequestFilter
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         extractAuthToken(request)?.let {
             updateAuthentication(it)
