@@ -1,4 +1,4 @@
-package com.flab.artshare.config.firebase
+package com.flab.artshare.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
@@ -32,9 +32,10 @@ class FirebaseInitializer(private val config: FirebaseConfig) {
     }
 
     fun getCredential(): GoogleCredentials {
-        return if (config.useEmulator)
+        println(config)
+        return if (config.useEmulator) {
             EmulatorCredentials()
-        else {
+        } else {
             val file = FileInputStream(File(config.adminSdkPath))
             GoogleCredentials.fromStream(file)
         }

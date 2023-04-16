@@ -1,4 +1,4 @@
-package com.flab.artshare.config.firebase
+package com.flab.artshare.firebase
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
@@ -7,5 +7,5 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties(prefix = "firebase")
 data class FirebaseConfig(
     var adminSdkPath: String = "dummy",
-    var useEmulator: Boolean = true
+    var useEmulator: Boolean = true,
 )
