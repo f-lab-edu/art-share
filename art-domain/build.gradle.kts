@@ -15,7 +15,6 @@ plugins {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation(project(mapOf("path" to ":art-external")))
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     implementation("org.flywaydb:flyway-core")

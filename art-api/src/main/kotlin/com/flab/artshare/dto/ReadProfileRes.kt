@@ -1,8 +1,8 @@
-package com.flab.artshare.common.dto
+package com.flab.artshare.dto
 
 import com.flab.artshare.profile.Profile
 
-data class CreateProfileRes(
+data class ReadProfileRes(
     val displayName: String,
     val about: String,
     val imgPath: String

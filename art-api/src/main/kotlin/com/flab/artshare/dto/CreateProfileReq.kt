@@ -1,4 +1,4 @@
-package com.flab.artshare.common.dto
+package com.flab.artshare.dto
 
 import com.flab.artshare.profile.Profile
 import org.springframework.web.multipart.MultipartFile

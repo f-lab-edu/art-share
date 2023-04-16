@@ -1,8 +1,7 @@
 package com.flab.artshare.config.swagger.docs
 
-import com.flab.artshare.common.dto.CreateProfileReq
-import com.flab.artshare.common.dto.CreateProfileRes
-import com.flab.artshare.common.dto.ReadProfileRes
+import com.flab.artshare.dto.CreateProfileReq
+import com.flab.artshare.dto.CreateProfileRes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content

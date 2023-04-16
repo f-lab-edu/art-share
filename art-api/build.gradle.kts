@@ -16,6 +16,7 @@ tasks.getByName<Jar>("jar") {
 
 dependencies {
     implementation(project(mapOf("path" to ":art-domain")))
+    implementation(project(mapOf("path" to ":art-external")))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
