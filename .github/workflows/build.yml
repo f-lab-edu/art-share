@@ -46,7 +46,7 @@ jobs:
                     distribution: 'temurin'
 
             -   name: Build with Gradle and Kover
-                run: ./gradlew build koverXmlReport
+                run: ./gradlew :art-api:build koverXmlReport
 
             -   name: Add coverage report to PR
                 uses: mi-kas/kover-report@v1
