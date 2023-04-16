@@ -1,4 +1,4 @@
-package com.flab.artshare.config.firebase
+package com.flab.artshare.firebase
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

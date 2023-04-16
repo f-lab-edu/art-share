@@ -1,4 +1,4 @@
-package com.flab.artshare.config.firebase
+package com.flab.artshare.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
@@ -32,6 +32,7 @@ class FirebaseInitializer(private val config: FirebaseConfig) {
     }
 
     fun getCredential(): GoogleCredentials {
+        println(config)
         return if (config.useEmulator)
             EmulatorCredentials()
         else {
