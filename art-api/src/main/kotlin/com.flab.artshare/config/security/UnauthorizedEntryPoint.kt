@@ -13,7 +13,7 @@ class UnauthorizedEntryPoint(private val objectMapper: ObjectMapper) : Authentic
     override fun commence(
         request: HttpServletRequest?,
         response: HttpServletResponse?,
-        authException: AuthenticationException?
+        authException: AuthenticationException?,
     ) {
         val errorMsg = mapOf("code" to HttpStatus.UNAUTHORIZED.value(), "msg" to "Unauthorized")
         response?.contentType = "application/json;charset=UTF-8"

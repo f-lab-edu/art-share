@@ -1,0 +1,16 @@
+spring:
+    config:
+        activate:
+            on-profile: local
+firebase:
+    use_emulator: true
+    admin-sdk-path: 'dummy_path'
+
+---
+spring:
+    config:
+        activate:
+            on-profile: dev
+firebase:
+    use_emulator: true
+    admin-sdk-path: '${user.dir}/firebase/firebase-admin.json'
