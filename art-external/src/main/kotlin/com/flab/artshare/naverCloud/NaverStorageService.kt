@@ -1,4 +1,4 @@
-package com.flab.artshare.storage
+package com.flab.artshare.naverCloud
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CannedAccessControlList
@@ -12,11 +12,11 @@ import java.io.FileOutputStream
 import java.util.UUID
 
 @Service
-class StorageService(private val storage: AmazonS3) {
+class NaverStorageService(private val storage: AmazonS3) {
 
     @Value("\${cloud.aws.s3.bucket}")
     private val bucket: String? = null
-    private val logger = LoggerFactory.getLogger(StorageService::class.java)
+    private val logger = LoggerFactory.getLogger(NaverStorageService::class.java)
 
     fun uploadImage(multipartFile: MultipartFile): String {
 

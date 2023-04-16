@@ -1,11 +1,10 @@
-package com.flab.artshare.config.firebase
+package com.flab.artshare.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.internal.EmulatorCredentials
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.io.File
@@ -13,13 +12,7 @@ import java.io.FileInputStream
 import java.io.IOException
 
 @Configuration
-class FirebaseConfig {
-
-    @Value("\${firebase.admin-sdk.path}")
-    private lateinit var firebaseAdminSdkPath: String
-
-    @Value("\${spring.profiles.active}")
-    private lateinit var activeProfile: String
+class FirebaseInitializer(private val config: FirebaseConfig) {
 
     @Bean
     @Throws(IOException::class)
@@ -39,10 +32,11 @@ class FirebaseConfig {
     }
 
     fun getCredential(): GoogleCredentials {
-        return if (activeProfile == "local")
+        println(config)
+        return if (config.useEmulator) {
             EmulatorCredentials()
-        else {
-            val file = FileInputStream(File(firebaseAdminSdkPath))
+        } else {
+            val file = FileInputStream(File(config.adminSdkPath))
             GoogleCredentials.fromStream(file)
         }
     }

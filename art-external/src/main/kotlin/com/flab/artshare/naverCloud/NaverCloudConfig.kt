@@ -1,4 +1,4 @@
-package com.flab.artshare.config.cloud
+package com.flab.artshare.naverCloud
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class CloudConfig {
+class NaverCloudConfig {
     @Value("\${cloud.aws.credentials.access-key}")
     private val accessKey: String? = null
 
