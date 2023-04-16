@@ -3,6 +3,7 @@
 .env
 /build/
 /db
+/out/
 
 # Ignore Gradle GUI config
 gradle-app.setting

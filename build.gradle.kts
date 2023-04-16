@@ -33,6 +33,7 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("io.mockk:mockk:1.12.0")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
@@ -68,6 +69,10 @@ tasks {
     val build by getting {
         dependsOn(ktlint)
     }
+}
+
+ktlint {
+    disabledRules.set(setOf("no-wildcard-imports"))
 }
 
 kover {

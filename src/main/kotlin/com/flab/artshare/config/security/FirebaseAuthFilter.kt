@@ -9,11 +9,11 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerRequestFilter() {
+data class FirebaseAuthFilter(private val firebaseAuth: FirebaseAuth) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         extractAuthToken(request)?.let {
             val token = verifyToken(it)
