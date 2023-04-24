@@ -2,16 +2,8 @@ description = "api module"
 group = "com.flab"
 version = "0.0.1-SNAPSHOT"
 
-tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    enabled = true
-}
-
-tasks.getByName<Jar>("jar") {
-    enabled = true
-}
-
-tasks.getByName<Jar>("jar") {
-    enabled = true
+tasks {
+    bootJar { enabled = true }
 }
 
 dependencies {
