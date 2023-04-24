@@ -10,5 +10,5 @@ data class NaverCloudConfig(
     val secretKey: String,
     val region: String,
     val endpoint: String,
-    val bucket: String
+    val bucket: String,
 )

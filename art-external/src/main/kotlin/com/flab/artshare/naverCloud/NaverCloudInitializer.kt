@@ -12,6 +12,7 @@ class NaverCloudInitializer(private val config: NaverCloudConfig) {
             config.accessKey,
             config.secretKey,
             config.region,
-            config.endpoint)
+            config.endpoint,
+        )
     }
 }

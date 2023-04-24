@@ -12,7 +12,6 @@ import java.util.UUID
 class StorageService(private val storage: NaverCloudApi) {
 
     fun uploadImage(multipartFile: MultipartFile): String {
-
         val imgName: String = makeRandomName()
 
         uploadFile(imgName, multipartFile)

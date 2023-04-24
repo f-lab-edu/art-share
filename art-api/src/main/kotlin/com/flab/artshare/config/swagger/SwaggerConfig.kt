@@ -20,6 +20,6 @@ class SwaggerConfig {
             .info(
                 Info().title("Art Share API")
                     .description("Art Share API 명세서입니다.")
-                    .version("v1")
+                    .version("v1"),
             )
 }

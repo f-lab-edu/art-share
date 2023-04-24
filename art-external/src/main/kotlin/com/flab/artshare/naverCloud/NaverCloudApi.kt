@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.amazonaws.services.s3.model.PutObjectResult
 import java.io.File
 
 class NaverCloudApi(
@@ -24,10 +23,12 @@ class NaverCloudApi(
             .withEndpointConfiguration(AwsClientBuilder.EndpointConfiguration(endpoint, region))
             .build()
 
-    fun uploadFile(fileName: String, file: File): PutObjectResult = amazonS3Client.putObject(
-        PutObjectRequest(bucket, fileName, file)
-            .withCannedAcl(CannedAccessControlList.PublicRead)
-    )
+    fun uploadFile(fileName: String, file: File) {
+        this.amazonS3Client.putObject(
+            PutObjectRequest(bucket, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead),
+        )
+    }
 
     fun getUrl(fileName: String): String = amazonS3Client.getUrl(bucket, fileName).toString()
 }
