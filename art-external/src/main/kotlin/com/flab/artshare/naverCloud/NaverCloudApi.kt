@@ -10,7 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest
 import com.amazonaws.services.s3.model.PutObjectResult
 import java.io.File
 
-class NaverCloud(
+class NaverCloudApi(
     private val bucket: String,
     accessKey: String,
     secretKey: String,
