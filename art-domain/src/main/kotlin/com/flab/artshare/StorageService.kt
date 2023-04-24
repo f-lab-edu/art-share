@@ -1,6 +1,6 @@
-package com.flab.artshare.naverCloud
+package com.flab.artshare
 
-import org.slf4j.LoggerFactory
+import com.flab.artshare.naverCloud.NaverCloudApi
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -8,9 +8,7 @@ import java.io.FileOutputStream
 import java.util.UUID
 
 @Service
-class NaverStorageService(private val storage: NaverCloud) {
-
-    private val logger = LoggerFactory.getLogger(NaverStorageService::class.java)
+class StorageService(private val storage: NaverCloudApi) {
 
     fun uploadImage(multipartFile: MultipartFile): String {
 
@@ -29,7 +27,6 @@ class NaverStorageService(private val storage: NaverCloud) {
         FileOutputStream(convertFile).use { fos -> fos.write(file.bytes) }
 
         runCatching { storage.uploadFile(fileName, convertFile) }
-            .onFailure { ex -> logger.error(ex.message) }
             .also { convertFile.delete() }
     }
 }
