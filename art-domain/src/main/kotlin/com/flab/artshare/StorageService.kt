@@ -1,6 +1,7 @@
 package com.flab.artshare
 
 import com.flab.artshare.naverCloud.NaverCloudApi
+import java.io.IOException
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -27,6 +28,7 @@ class StorageService(private val storage: NaverCloudApi) {
         FileOutputStream(convertFile).use { fos -> fos.write(file.bytes) }
 
         runCatching { storage.uploadFile(fileName, convertFile) }
+            .onFailure { throw IOException("Failed to upload file: $fileName", it) }
             .also { convertFile.delete() }
     }
 }
