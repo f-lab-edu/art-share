@@ -7,7 +7,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootApplication
 @SpringBootTest
 @ExtendWith(SpringExtension::class)
-class ArtExternalTest: DescribeSpec() {
+class ArtExternalTest : DescribeSpec() {
 
     init {
         describe("contextLoads") {
