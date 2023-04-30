@@ -35,8 +35,12 @@ subprojects {
         testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
         testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.springframework.boot:spring-boot-starter-web")
+    }
+
+    tasks {
+        jar { enabled = true }
+        bootJar { enabled = false }
     }
 
     tasks.getByName<Test>("test") {
