@@ -21,6 +21,12 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeRequests {
+                // Swagger 관련 경로 인증 허용
+                authorize("/swagger-ui.html", permitAll)
+                authorize("/swagger-ui/**", permitAll)
+                authorize("/v3/api-docs/**", permitAll)
+
+                // 나머지 경로에 대한 인증 요구
                 authorize(anyRequest, authenticated)
             }
             httpBasic {
