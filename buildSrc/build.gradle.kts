@@ -7,5 +7,5 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation("io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE")
 }

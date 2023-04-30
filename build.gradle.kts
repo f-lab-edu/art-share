@@ -4,7 +4,6 @@ plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.6.21"
     id(Plugins.springBoot) version "2.7.9"
-    id(Plugins.springDependencyManagement) version "1.0.15.RELEASE"
     id(Plugins.kover) version "0.7.0-Alpha"
     id(Plugins.detekt) version "1.19.0"
     id("org.flywaydb.flyway") version "8.4.1" apply false
@@ -39,6 +38,16 @@ subprojects {
         buildUponDefaultConfig = true
         allRules = false
         disableDefaultRuleSets = false
+    }
+
+    val detektFormat by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
+        // detekt 포맷팅을 위한 task
+        config.setFrom(files(projectDir.resolve("config/detekt/detekt.yml")))
+    }
+
+    val detektAll by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
+        // detekt 정적 분석을 돌리고 그에 대한 성공 / 실패 여부를 반환하는 task
+        config.setFrom(files(projectDir.resolve("config/detekt/detekt.yml")))
     }
 
     dependencies {

@@ -1,10 +1,12 @@
-name: Kotlin CI with Gradle and Kover
+name: Kotlin CI with Gradle, Kover, and Detekt
 
 on:
     pull_request:
         branches: [ "main", "dev" ]
         paths:
             - 'src/**'
+env:
+    DETEKT_RELEASE_TAG: v1.15.0
 
 jobs:
     checkstyle:
@@ -54,3 +56,25 @@ jobs:
                     path: ${{ github.workspace }}/config/kover-xml-result/report.xml
                     token: ${{ secrets.GITHUB_TOKEN }}
                     title: Code Coverage
+
+    detekt: # 추가된 detekt 작업
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Setting Checkout
+                uses: actions/checkout@v2
+
+            # Detekt 설치
+            -   name: Setup Detekt
+                run: |
+                    dest=$( mktemp -d )
+                    curl --request GET \
+                      --url https://github.com/detekt/detekt/releases/download/${{ env.DETEKT_RELEASE_TAG }}/detekt-${{ env.DETEKT_RELEASE_TAG }}-all.jar \
+                      --silent \
+                      --location \
+                      --output $dest/detekt
+                    chmod a+x $dest/detekt
+                    echo $dest >> $GITHUB_PATH
+
+            # Detekt 실행
+            -   name: Run Detekt
+                run: detekt --input src --config config/detekt.yml --report txt:detekt-report.txt
