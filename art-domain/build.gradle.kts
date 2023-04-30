@@ -7,9 +7,9 @@ plugins {
 
 dependencies {
     implementation(project(mapOf("path" to ":art-external")))
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
+    implementation(Dependencies.springBootStarterDataJpa)
+    runtimeOnly(Dependencies.h2Database)
+    runtimeOnly(Dependencies.mariadbJavaClient)
+    implementation(Dependencies.flywayCore)
+    implementation(Dependencies.flywayMysql)
 }

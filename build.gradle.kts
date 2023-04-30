@@ -3,12 +3,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.6.21"
-    id("org.springframework.boot") version "2.7.9"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
+    id(Plugins.springBoot) version "2.7.9"
+    id(Plugins.springDependencyManagement) version "1.0.15.RELEASE"
+    id(Plugins.kover) version "0.7.0-Alpha"
+    id(Plugins.detekt) version "1.19.0"
     id("org.flywaydb.flyway") version "8.4.1" apply false
     kotlin("plugin.jpa") version "1.6.21" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.2.0" // 추가!!
+    id(Plugins.ktlint) version "11.2.0" // 추가!!
 }
 
 allprojects {
@@ -21,21 +22,33 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "org.jetbrains.kotlinx.kover")
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = Plugins.springBoot)
+    apply(plugin = Plugins.springDependencyManagement)
+    apply(plugin = Plugins.kover)
+    apply(plugin = Plugins.ktlint)
+    apply(plugin = Plugins.kotlinSpring)
+    apply(plugin = Plugins.kotlinJvm)
+
+    // Apply Detekt plugin to all subprojects
+    apply(plugin = Plugins.detekt)
+
+    detekt {
+        source.setFrom(files("src/main/kotlin"))
+        config.setFrom(files("$rootDir/config/detekt.yml"))
+        parallel = true
+        buildUponDefaultConfig = true
+        allRules = false
+        disableDefaultRuleSets = false
+    }
 
     dependencies {
-        testImplementation("io.mockk:mockk:1.13.4")
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-        developmentOnly("org.springframework.boot:spring-boot-devtools")
-        testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
-        testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        implementation("org.springframework.boot:spring-boot-starter-web")
+        testImplementation(Dependencies.mockk)
+        implementation(Dependencies.jacksonModuleKotlin)
+        developmentOnly(Dependencies.springBootDevtools)
+        testImplementation(Dependencies.kotestRunnerJUnit5)
+        testImplementation(Dependencies.kotestExtensionsSpring)
+        testImplementation(Dependencies.springBootStarterTest)
+        implementation(Dependencies.springBootStarterWeb)
     }
 
     tasks {
