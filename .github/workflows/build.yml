@@ -5,8 +5,6 @@ on:
         branches: [ "main", "dev" ]
         paths:
             - 'src/**'
-env:
-    DETEKT_RELEASE_TAG: v1.15.0
 
 jobs:
     checkstyle:
@@ -57,24 +55,28 @@ jobs:
                     token: ${{ secrets.GITHUB_TOKEN }}
                     title: Code Coverage
 
-    detekt: # 추가된 detekt 작업
+    detekt:
         runs-on: ubuntu-latest
         steps:
             -   name: Setting Checkout
                 uses: actions/checkout@v2
 
-            # Detekt 설치
-            -   name: Setup Detekt
-                run: |
-                    dest=$( mktemp -d )
-                    curl --request GET \
-                      --url https://github.com/detekt/detekt/releases/download/${{ env.DETEKT_RELEASE_TAG }}/detekt-${{ env.DETEKT_RELEASE_TAG }}-all.jar \
-                      --silent \
-                      --location \
-                      --output $dest/detekt
-                    chmod a+x $dest/detekt
-                    echo $dest >> $GITHUB_PATH
+            -   name: Cache Gradle dependencies and build cache
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.gradle/caches/modules-2
+                        ~/.gradle/wrapper
+                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+                    restore-keys: |
+                        ${{ runner.os }}-gradle-
+
+            -   name: Set up JDK 11
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '11'
+                    distribution: 'temurin'
 
             # Detekt 실행
             -   name: Run Detekt
-                run: detekt --input src --config config/detekt.yml --report txt:detekt-report.txt
+                run: ./gradlew detekt
