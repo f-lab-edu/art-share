@@ -1,4 +1,2 @@
 rootProject.name = "ArtShare"
-include("art-api")
-include("art-domain")
-include("art-external")
+include("art-api", "art-domain", "art-external")
