@@ -79,4 +79,4 @@ jobs:
 
             # Detekt 실행
             -   name: Run Detekt
-                run: ./gradlew detekt
+                run: ./gradlew detektAll
