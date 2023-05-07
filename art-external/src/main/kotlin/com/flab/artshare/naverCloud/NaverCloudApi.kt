@@ -8,27 +8,21 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.PutObjectRequest
 import java.io.File
+import java.io.IOException
 
 class NaverCloudApi(
     private val bucket: String,
-    accessKey: String,
-    secretKey: String,
-    region: String,
-    endpoint: String,
+    private val amazonS3Client: AmazonS3
 ) {
-
-    private val amazonS3Client: AmazonS3 =
-        AmazonS3ClientBuilder.standard()
-            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(accessKey, secretKey)))
-            .withEndpointConfiguration(AwsClientBuilder.EndpointConfiguration(endpoint, region))
-            .build()
-
-    fun uploadFile(fileName: String, file: File) {
+    fun uploadFile(fileName: String, file: File) = runCatching {
         this.amazonS3Client.putObject(
             PutObjectRequest(bucket, fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead),
         )
-    }
+    }.onFailure { throw IOException("Failed to upload file: $fileName", it) }
 
-    fun getUrl(fileName: String): String = amazonS3Client.getUrl(bucket, fileName).toString()
+    fun getUrl(fileName: String): String =
+        runCatching {
+            amazonS3Client.getUrl(bucket, fileName).toString()
+        }.getOrElse { throw IOException("Failed to get img url: $fileName", it) }
 }
