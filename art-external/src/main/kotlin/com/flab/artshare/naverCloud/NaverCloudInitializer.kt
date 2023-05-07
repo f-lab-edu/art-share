@@ -20,7 +20,7 @@ class NaverCloudInitializer(private val config: NaverCloudConfig) {
     fun naverCloud(): NaverCloudApi {
         return NaverCloudApi(
             config.bucket,
-            this.amazonS3Client
+            this.amazonS3Client,
         )
     }
 }

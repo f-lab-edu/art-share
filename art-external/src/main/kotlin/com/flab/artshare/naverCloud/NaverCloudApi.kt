@@ -1,10 +1,6 @@
 package com.flab.artshare.naverCloud
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.client.builder.AwsClientBuilder
 import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.PutObjectRequest
 import java.io.File
@@ -12,7 +8,7 @@ import java.io.IOException
 
 class NaverCloudApi(
     private val bucket: String,
-    private val amazonS3Client: AmazonS3
+    private val amazonS3Client: AmazonS3,
 ) {
     fun uploadFile(fileName: String, file: File) = runCatching {
         this.amazonS3Client.putObject(
