@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
-import javax.validation.Validation
 
 @RestController
 @RequestMapping("/api/profile")
@@ -20,7 +18,8 @@ class ProfileController(
     @PostMapping("/me")
     override fun createProfile(
         @AuthenticationPrincipal uid: String,
-        @ModelAttribute @Validated req: CreateProfileReq,
+        @ModelAttribute @Validated
+        req: CreateProfileReq,
     ): ResponseEntity<CreateProfileRes> {
         return ResponseEntity(createProfileAndUploadImgService.execute(uid, req), HttpStatus.CREATED)
     }

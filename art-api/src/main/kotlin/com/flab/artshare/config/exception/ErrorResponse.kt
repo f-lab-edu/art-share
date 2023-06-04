@@ -23,7 +23,7 @@ data class ErrorResponse(
             val errorResponse = ErrorResponse(
                 httpStatus.value(),
                 ex.message!!,
-                fieldErrors
+                fieldErrors,
             )
 
             return ResponseEntity

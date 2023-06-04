@@ -6,5 +6,6 @@ import org.springframework.stereotype.Service
 @Service
 class AuthService(private val firebaseApi: FirebaseApi) {
     fun getUserId(token: String): String {
-        return this.firebaseApi.verifyToken(token)}
+        return this.firebaseApi.verifyToken(token)
+    }
 }
