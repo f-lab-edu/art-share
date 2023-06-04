@@ -5,6 +5,9 @@ spring:
             - domain
             - external
 management:
+    metrics:
+        tags:
+            application: "art-share"
     endpoints:
         web:
             exposure:
