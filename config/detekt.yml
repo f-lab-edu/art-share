@@ -1,0 +1,38 @@
+build:
+    maxIssues: 0
+    excludeCorrectable: false
+    weights:
+
+config:
+    validation: true
+    excludes: ""
+
+processors:
+    active: true
+    exclude:
+        - 'DetektProgressListener'
+
+console-reports:
+    active: true
+    exclude:
+        - 'ProjectStatisticsReport'
+        - 'ComplexityReport'
+        - 'NotificationReport'
+        - 'FileBasedFindingsReport'
+
+comments:
+    active: true
+    excludes: '**/test/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
+    AbsentOrWrongFileLicense:
+        active: false
+        licenseTemplateFile: 'license.template'
+    CommentOverPrivateFunction:
+        active: false
+
+performance:
+    SpreadOperator:
+        active: false
+
+style:
+    MagicNumber:
+        active: false
