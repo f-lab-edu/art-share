@@ -5,23 +5,25 @@ import java.lang.IllegalArgumentException
 
 @Service
 class ProfileService(
-    private val profileRepo: ProfileRepository
+    private val profileRepo: ProfileRepository,
 ) {
-    fun createProfile(uid: String, req: Profile): Profile {
+    fun createProfile(req: Profile): Profile {
         validateProfileRequest(req)
 
-        checkProfileExists(uid)
+        checkProfileExists(req.uid)
 
         return profileRepo.save(req)
     }
 
     private fun checkProfileExists(uid: String) {
-        if (profileRepo.existsByUid(uid))
+        if (profileRepo.existsByUid(uid)) {
             throw IllegalStateException("Profile with the provided uid already exists.")
+        }
     }
 
     private fun validateProfileRequest(req: Profile) {
-        if (profileRepo.existsByDisplayNameOrAbout(req.displayName, req.about))
+        if (profileRepo.existsByDisplayNameOrAbout(req.displayName, req.about)) {
             throw IllegalArgumentException("Profile with the provided display name or about already exists.")
+        }
     }
 }

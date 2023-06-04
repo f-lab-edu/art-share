@@ -82,6 +82,7 @@ subprojects {
 
     ktlint {
         ignoreFailures.set(false)
+        disabledRules.set(setOf("no-wildcard-imports"))
 
         reporters {
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)

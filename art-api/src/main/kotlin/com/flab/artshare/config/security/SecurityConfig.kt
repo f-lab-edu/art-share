@@ -1,6 +1,6 @@
 package com.flab.artshare.config.security
 
-import com.flab.artshare.firebase.FirebaseService
+import com.flab.artshare.AuthService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val firbaseService: FirebaseService,
+    private val authService: AuthService,
     private val unauthorizedEntryPoint: UnauthorizedEntryPoint,
 ) {
     @Bean
@@ -42,7 +42,7 @@ class SecurityConfig(
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             addFilterBefore<UsernamePasswordAuthenticationFilter>(
-                JwtAuthFilter(firbaseService),
+                JwtAuthFilter(authService),
             )
             exceptionHandling {
                 authenticationEntryPoint = unauthorizedEntryPoint

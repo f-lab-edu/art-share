@@ -7,10 +7,11 @@ import javax.persistence.Id
 
 @Entity
 data class Profile(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
     val uid: String,
     var displayName: String,
     var about: String,
-    var imgPath: String
+    var imgPath: String,
 )
