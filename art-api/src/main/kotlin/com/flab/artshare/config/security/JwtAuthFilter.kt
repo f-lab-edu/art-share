@@ -14,15 +14,15 @@ class JwtAuthFilter(private val authService: AuthService) : OncePerRequestFilter
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        extractAuthToken(request)?.let {
-            updateAuthentication(it)
-        }
+        // TODO: check fierbase token
+        updateAuthentication("dummy_token")
         filterChain.doFilter(request, response)
     }
 
     private fun updateAuthentication(token: String) {
         SecurityContextHolder.getContext().authentication =
-            UsernamePasswordAuthenticationToken(this.authService.getUserId(token), null, null)
+            //UsernamePasswordAuthenticationToken(this.authService.getUserId(token), null, null)
+            UsernamePasswordAuthenticationToken("local_user", null, null)
     }
 
     private fun extractAuthToken(request: HttpServletRequest): String? =
