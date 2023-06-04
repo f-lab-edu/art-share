@@ -36,3 +36,7 @@ performance:
 style:
     MagicNumber:
         active: false
+    WildcardImport:
+        active: false
+    ThrowsCount:
+        active: false
