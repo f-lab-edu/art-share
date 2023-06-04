@@ -16,7 +16,7 @@ class CreateProfileAndUploadImgService(
         val imgPath = runCatching { this.storageService.uploadImage(req.profileImg!!) }
             .getOrElse { throw IOException("Error uploading image to Storage", it) }
 
-        val profile = runCatching { this.profileService.createProfile(req.toEntity(uid, imgPath)) }
+        val profile = runCatching { this.profileService.createProfile(req.toEntity(uid, imgPath!!)) }
             .getOrElse {
                 when (it) {
                     is IllegalStateException -> throw IllegalStateException("Error message", it)
