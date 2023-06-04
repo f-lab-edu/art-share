@@ -25,6 +25,7 @@ class SecurityConfig(
                 authorize("/swagger-ui.html", permitAll)
                 authorize("/swagger-ui/**", permitAll)
                 authorize("/v3/api-docs/**", permitAll)
+                authorize("/actuator/**", permitAll)
 
                 // 나머지 경로에 대한 인증 요구
                 authorize(anyRequest, authenticated)

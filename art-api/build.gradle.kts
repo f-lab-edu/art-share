@@ -15,4 +15,6 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 }
