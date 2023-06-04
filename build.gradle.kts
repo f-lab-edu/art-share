@@ -1,126 +1,134 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.7.9"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.6.21"
+    id(Plugins.springBoot) version "2.7.9"
+    id(Plugins.kover) version "0.7.0-Alpha"
+    id(Plugins.detekt) version "1.19.0"
+    id("org.flywaydb.flyway") version "8.4.1" apply false
+    kotlin("plugin.jpa") version "1.6.21" apply false
+    id(Plugins.ktlint) version "11.2.0" // 추가!!
 }
 
-group = "com.flab"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+allprojects {
+    group = "com.flab"
+    version = "0.0.1-SNAPSHOT"
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("com.google.firebase:firebase-admin:9.1.1")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+    repositories {
+        mavenCentral()
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
+subprojects {
+    apply(plugin = Plugins.springBoot)
+    apply(plugin = Plugins.springDependencyManagement)
+    apply(plugin = Plugins.kover)
+    apply(plugin = Plugins.ktlint)
+    apply(plugin = Plugins.kotlinSpring)
+    apply(plugin = Plugins.kotlinJvm)
 
-tasks.register<Copy>("updateLib") {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(configurations["compileClasspath"])
-    into("libs/")
-}
+    // Apply Detekt plugin to all subprojects
+    apply(plugin = Plugins.detekt)
 
-tasks.register("buildAndReload") {
-    group = "application"
-    description = "Builds the project and restarts the application using the run.sh script."
-
-    dependsOn("build")
-
-    mustRunAfter("build")
-
-    doLast {
-        File(".", "reload.txt").writeText("${System.currentTimeMillis()}")
+    detekt {
+        source.setFrom(files("src/main/kotlin"))
+        config.setFrom(files("$rootDir/config/detekt.yml"))
+        parallel = true
+        buildUponDefaultConfig = true
+        allRules = false
+        disableDefaultRuleSets = false
     }
-}
 
-tasks {
-    // ktlint check task
-    val ktlint by creating {
-        group = "verification"
-        description = "Check Kotlin code style."
-        inputs.files(project.files("**/*.kt"))
-        doLast {
-            project.exec {
-                commandLine("bash", "-c", "./gradlew ktlintCheck")
-            }
+    val detektFormat by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
+        // detekt 포맷팅을 위한 task
+        config.setFrom(files(projectDir.resolve("config/detekt/detekt.yml")))
+    }
+
+    val detektAll by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
+        // detekt 정적 분석을 돌리고 그에 대한 성공 / 실패 여부를 반환하는 task
+        config.setFrom(files(projectDir.resolve("config/detekt/detekt.yml")))
+    }
+
+    dependencies {
+        testImplementation(Dependencies.mockk)
+        implementation(Dependencies.jacksonModuleKotlin)
+        developmentOnly(Dependencies.springBootDevtools)
+        testImplementation(Dependencies.kotestRunnerJUnit5)
+        testImplementation(Dependencies.kotestExtensionsSpring)
+        testImplementation(Dependencies.springBootStarterTest)
+        implementation(Dependencies.springBootStarterWeb)
+    }
+
+    tasks {
+        jar { enabled = true }
+        bootJar { enabled = false }
+    }
+
+    tasks.getByName<Test>("test") {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "11"
         }
     }
 
-    // always run ktlint check task before any other task
-    val build by getting {
-        dependsOn(ktlint)
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
-}
 
-kover {
-    disabledForProject = false
+    ktlint {
+        ignoreFailures.set(false)
+        disabledRules.set(setOf("no-wildcard-imports"))
 
-    useKoverTool()
-
-    excludeInstrumentation {
-        classes("com.flab.artshare.ArtShareApplication.kt")
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        }
     }
-}
 
-koverReport {
-    filters {
-        excludes {
+    kover {
+        disabledForProject = false
+
+        useKoverTool()
+
+        excludeInstrumentation {
             classes("com.flab.artshare.ArtShareApplication.kt")
         }
-        includes {
-            packages("com.flab.artshare")
+    }
+
+    koverReport {
+        filters {
+            excludes {
+                classes("com.flab.artshare.ArtShareApplication.kt")
+            }
+            includes {
+                packages("com.flab.artshare")
+            }
         }
-    }
 
-    xml {
-        onCheck = false
-        setReportFile(file("$rootDir/config/kover-xml-result/report.xml"))
-    }
+        xml {
+            onCheck = false
+            setReportFile(file("$rootDir/config/kover-xml-result/report.xml"))
+        }
 
-    html {
-        title = "ArtShare Coverage Report"
-        onCheck = false
-        setReportDir(file("$rootDir/config/kover-html-result"))
-    }
+        html {
+            title = "ArtShare Coverage Report"
+            onCheck = false
+            setReportDir(file("$rootDir/config/kover-html-result"))
+        }
 
-    verify {
-        rule {
-            entity = kotlinx.kover.gradle.plugin.dsl.GroupingEntityType.APPLICATION
+        verify {
+            rule {
+                entity = kotlinx.kover.gradle.plugin.dsl.GroupingEntityType.APPLICATION
 
-            bound {
-                minValue = 1 // 검증할 커버리지의 최소 범위
-                maxValue = 99 // 검증할 커버리지의 최대 범위
+                bound {
+                    minValue = 1 // 검증할 커버리지의 최소 범위
+                    maxValue = 99 // 검증할 커버리지의 최대 범위
+                }
             }
         }
     }
