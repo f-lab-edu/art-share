@@ -8,8 +8,7 @@ on:
 
 jobs:
     project_deploy:
-        runs-on: ubuntu-18.04 # naver cloud os
-
+        runs-on: ubuntu-18.04
         steps:
             -   name: Checkout
                 uses: actions/checkout@v2
