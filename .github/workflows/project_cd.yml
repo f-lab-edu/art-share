@@ -55,7 +55,7 @@ jobs:
 
             -   name: Docker build and registry
                 run: |
-                    echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+                    echo "${{ secrets.REGISTRY}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
                     docker build -t ghcr.io/${{ github.repository }} .
                     docker push ghcr.io/${{ github.repository }}
 
