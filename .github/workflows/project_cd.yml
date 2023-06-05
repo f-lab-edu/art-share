@@ -7,14 +7,6 @@ on:
             - 'main'
 
 jobs:
-    checkstyle:
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Setting Checkout
-                uses: actions/checkout@v2
-            -   name: Run ktlint
-                run: ./gradlew ktlintCheck
-
     project_deploy:
         runs-on: ubuntu-latest
         steps:
@@ -60,3 +52,8 @@ jobs:
 
             -   name: Build with Gradle
                 run: ./gradlew :art-api:build -Pspring.profiles.active=test -x test
+
+            -   name: Docker build and registry
+                run: |
+                    echo "${{ secrets.REGISTRY}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+
