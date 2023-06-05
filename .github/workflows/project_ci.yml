@@ -35,7 +35,8 @@ jobs:
                     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
                     restore-keys: |
                         ${{ runner.os }}-gradle-
-
+            -   name: List directories
+                run: ls -R
             -   name: Create Api Property yaml file
                 run: |
                     cd ./art-api/src/main/resources
