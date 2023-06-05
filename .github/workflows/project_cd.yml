@@ -65,7 +65,7 @@ jobs:
 
             -   name: Docker build and registry
                 run: |
-                    echo "${{ secrets.REGISTRY}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+                    echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
                     docker build -t ghcr.io/${{ github.repository }} .
                     docker push ghcr.io/${{ github.repository }}
 
@@ -77,7 +77,7 @@ jobs:
                     password: ${{secrets.SERVER_PASSWORD}}
                     port: ${{secrets.SERVER_PORT}}
                     script: |
-                        echo "${{ secrets.REGISTRY}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+                        echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
                         docker rm -f $(docker ps -q -a)
                         docker pull ghcr.io/${{ github.repository }}
                         docker run \
