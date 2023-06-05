@@ -47,7 +47,7 @@ jobs:
             -   name: Create Domain Property yaml file
                 run: |
                     mkdir -p ./art-domain/src/main/resources
-                    cd ~/art-domain/src/main/resources
+                    cd ./art-domain/src/main/resources
                     touch ./application.yaml
                     echo "${{ secrets.PROPERTIES_DOMAIN}}" > ./application-domain.yaml
                 shell: bash
@@ -55,7 +55,7 @@ jobs:
             -   name: Create External Property yaml file
                 run: |
                     mkdir -p ./art-external/src/main/resources
-                    cd ~/art-external/src/main/resources
+                    cd ./art-external/src/main/resources
                     touch ./application.yaml
                     echo "${{ secrets.PROPERTIES_EXTERNAL}}" > ./application-external.yaml
                 shell: bash
