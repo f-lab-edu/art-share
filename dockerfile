@@ -4,10 +4,7 @@ VOLUME /tmp
 
 ARG JAR_FILE=./art-api/build/libs/art-api-0.0.1-SNAPSHOT.jar
 
-COPY ./art-api/src/main/resources/application.yaml application.yaml
-COPY ./art-domain/src/main/resources/application-domain.yaml application-domain.yaml
-COPY ./art-external/src/main/resources/application-external.yaml application-external.yaml
-COPY firebase/firebase-admin.json firebase-admin.json
+COPY firebase/firebase-admin.json firebase/firebase-admin.json
 
 COPY ${JAR_FILE} app.jar
 
