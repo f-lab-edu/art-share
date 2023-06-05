@@ -3,6 +3,9 @@ name: Kotlin CI with Gradle, Kover, and Detekt
 on:
     push :
         branches: [ "*" ]
+        paths:
+            - '*'
+                
     pull_request:
         branches: [ "main", "dev" ]
         paths:
