@@ -25,7 +25,7 @@ ENV PINPOINT_AGENT_ID="Agent"
 ENV PINPOINT_APP_NAME="art-share"
 
 # CMD command
-CMD java -jar \
+CMD exec java -jar \
     -javaagent:$JAVA_AGENT \
     -Dpinpoint.agentId=$PINPOINT_AGENT_ID \
     -Dpinpoint.applicationName=$PINPOINT_APP_NAME \
