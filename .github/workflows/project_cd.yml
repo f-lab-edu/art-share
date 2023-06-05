@@ -81,8 +81,6 @@ jobs:
                         docker rm -f $(docker ps -q -a)
                         docker pull ghcr.io/${{ github.repository }}
                         docker run \
-                        -e JAVA_AGENT=${{secrets.PINPOINT_PATH}} \
-                        -e PINPOINT_AGENT_ID=${{secrets.PINPOINT_AGENT_ID}} \
-                        -e PINPOINT_APP_NAME=${{secrets.PINPOINT_APP_NAME}} \
+                        -p 8080:8080 \
                         ghcr.io/${{ github.repository }}
 
