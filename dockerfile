@@ -29,5 +29,5 @@ CMD nohup java -jar \
     -javaagent:$JAVA_AGENT \
     -Dpinpoint.agentId=$PINPOINT_AGENT_ID \
     -Dpinpoint.applicationName=$PINPOINT_APP_NAME \
-    -Pspring.profiles.active=prod
+    -Pspring.profiles.active=prod \
     app.jar 2>&1 &
