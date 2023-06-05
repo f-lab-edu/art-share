@@ -12,8 +12,8 @@ on:
             - '*'
 
 jobs:
-    CD:
-        runs-one: ubuntu-18.04 # naver cloud os
+    Project CD:
+        runs-on: ubuntu-18.04 # naver cloud os
 
         steps:
             - name: Checkout
