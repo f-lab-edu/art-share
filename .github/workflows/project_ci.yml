@@ -6,7 +6,7 @@ on:
     pull_request:
         branches: [ "main", "dev" ]
         paths:
-            - '*/src/**' # 모든 모듈의 src 폴더 추적
+            - '*'
 
 jobs:
     checkstyle:
