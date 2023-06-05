@@ -38,21 +38,21 @@ jobs:
 
             -   name: Create Api Property yaml file
                 run: |
-                    cd art-api/src/main/resources
+                    cd ~/art-api/src/main/resources
                     touch ./application.yaml
                     echo "${{ secrets.PROPERTIES_API}}" > ./application.yaml
                 shell: bash
 
             -   name: Create Domain Property yaml file
                 run: |
-                    cd art-domain/src/main/resources
+                    cd ~/art-domain/src/main/resources
                     touch ./application.yaml
                     echo "${{ secrets.PROPERTIES_DOMAIN}}" > ./application-domain.yaml
                 shell: bash
 
             -   name: Create External Property yaml file
                 run: |
-                    cd art-external/src/main/resources
+                    cd ~/art-external/src/main/resources
                     touch ./application.yaml
                     echo "${{ secrets.PROPERTIES_EXTERNAL}}" > ./application-external.yaml
                 shell: bash
