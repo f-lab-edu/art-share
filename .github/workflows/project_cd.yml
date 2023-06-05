@@ -50,8 +50,18 @@ jobs:
                     echo "${{ secrets.PROPERTIES_EXTERNAL}}" > ./application-external.yaml
                 shell: bash
 
+            -   name: Cache Gradle dependencies and build cache
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.gradle/caches/modules-2
+                        ~/.gradle/wrapper
+                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+                    restore-keys: |
+                        ${{ runner.os }}-gradle-
+
             -   name: Build with Gradle
-                run: ./gradlew :art-api:build -Pspring.profiles.active=test -x test
+                run: ./gradlew :art-api:build -Pspring.profiles.active=prod -x test
 
             -   name: Docker build and registry
                 run: |
