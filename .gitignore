@@ -17,3 +17,6 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 **/firebase-admin.json
+**/**/application.yaml
+**/**/application-domain.yaml
+**/**/application-external.yaml
