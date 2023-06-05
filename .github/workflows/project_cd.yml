@@ -7,6 +7,14 @@ on:
             - 'main'
 
 jobs:
+    checkstyle:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Setting Checkout
+                uses: actions/checkout@v2
+            -   name: Run ktlint
+                run: ./gradlew ktlintCheck
+                
     project_deploy:
         runs-on: ubuntu-18.04
         steps:
