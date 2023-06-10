@@ -1,0 +1,86 @@
+name: Project Cd
+
+on:
+    push:
+        branches:
+            - 'main'
+
+jobs:
+    project_deploy:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Set up JDK 11
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '11'
+                    distribution: 'temurin'
+
+            -   name: Create Firebase Json
+                uses: jsdaniell/create-json@v1.2.2
+                with:
+                    name: firebase-admin.json
+                    json: ${{ secrets.FIREBASE_ADMIN_JSON }}
+                    dir: firebase/
+
+            -   name: Create Api Property yaml file
+                run: |
+                    mkdir -p ./art-api/src/main/resources
+                    cd ./art-api/src/main/resources
+                    touch ./application.yaml
+                    echo "${{ secrets.PROPERTIES_API}}" > ./application.yaml
+                shell: bash
+
+            -   name: Create Domain Property yaml file
+                run: |
+                    mkdir -p ./art-domain/src/main/resources
+                    cd ./art-domain/src/main/resources
+                    touch ./application-domain.yaml
+                    echo "${{ secrets.PROPERTIES_DOMAIN}}" > ./application-domain.yaml
+                shell: bash
+
+            -   name: Create External Property yaml file
+                run: |
+                    mkdir -p ./art-external/src/main/resources
+                    cd ./art-external/src/main/resources
+                    touch ./application-external.yaml
+                    echo "${{ secrets.PROPERTIES_EXTERNAL}}" > ./application-external.yaml
+                shell: bash
+
+            -   name: Cache Gradle dependencies and build cache
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.gradle/caches/modules-2
+                        ~/.gradle/wrapper
+                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+                    restore-keys: |
+                        ${{ runner.os }}-gradle-
+
+            -   name: Build with Gradle
+                run: ./gradlew :art-api:build -Pspring.profiles.active=prod -x test
+
+            -   name: Docker build and registry
+                run: |
+                    echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+                    docker build -t ghcr.io/${{ github.repository }} .
+                    docker push ghcr.io/${{ github.repository }}
+
+            -   name: Deploy to Server
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{secrets.SERVER_IP}}
+                    username: ${{secrets.SERVER_USER_NAME}}
+                    password: ${{secrets.SERVER_PASSWORD}}
+                    port: ${{secrets.SERVER_PORT}}
+                    script: |
+                        echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+                        docker rm -f $(docker ps -q -a)
+                        docker pull ghcr.io/${{ github.repository }}
+                        nohup docker run \
+                        -p 8080:8080 \
+                        ghcr.io/${{ github.repository }} \
+                        > nohup.out 2>&1 &
+

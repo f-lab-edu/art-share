@@ -8,8 +8,8 @@ plugins {
 dependencies {
     implementation(project(mapOf("path" to ":art-external")))
     implementation(Dependencies.springBootStarterDataJpa)
-    runtimeOnly(Dependencies.h2Database)
     runtimeOnly(Dependencies.mariadbJavaClient)
     implementation(Dependencies.flywayCore)
     implementation(Dependencies.flywayMysql)
+    implementation("mysql:mysql-connector-java:8.0.27")
 }
