@@ -11,9 +11,9 @@ object Dependencies {
     const val springBootStarterSecurity = "org.springframework.boot:spring-boot-starter-security"
     const val springSecurityTest = "org.springframework.security:spring-security-test"
     const val springdocOpenapiUi = "org.springdoc:springdoc-openapi-ui:1.6.15"
-    const val micrometerCore = "io.micrometer:micrometer-core:1.7.6"
+    const val micrometerCore = "io.micrometer:micrometer-registry-prometheus"
     const val springBootStarterActuator = "org.springframework.boot:spring-boot-starter-actuator"
-
+    
     // Art Domain
     const val springBootStarterDataJpa = "org.springframework.boot:spring-boot-starter-data-jpa"
     const val h2Database = "com.h2database:h2"
