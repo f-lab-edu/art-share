@@ -1,9 +1,6 @@
 name: Kotlin CI with Gradle, Kover, and Detekt
 
 on:
-    push:
-        branches:
-            - '#28-CI-/-CD-구축-리뉴얼'
     pull_request:
         branches:
             - 'main'
