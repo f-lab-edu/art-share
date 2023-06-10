@@ -1,0 +1,32 @@
+spring:
+    config:
+        activate:
+            on-profile: local
+firebase:
+    use_emulator: true
+    admin-sdk-path: '${user.dir}/firebase/firebase-admin.json'
+
+cloud:
+    naver:
+        access-key: "sample"
+        secret-key: "sample"
+        region-key: "sample"
+        endpoint: "sample"
+        bucket: "sample"
+
+---
+spring:
+    config:
+        activate:
+            on-profile: dev
+firebase:
+    use_emulator: true
+    admin-sdk-path: '${user.dir}/firebase/firebase-admin.json'
+
+cloud:
+    naver:
+        access-key: "sample"
+        secret-key: "sample"
+        region-key: "sample"
+        endpoint: "sample"
+        bucket: "sample"
