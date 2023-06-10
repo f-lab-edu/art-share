@@ -1,12 +1,10 @@
 package com.flab.artshare.post
 
-import com.flab.artshare.common.dto.CreatePostReq
-import com.flab.artshare.common.dto.UpdatePostReq
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.mockk.*
-import java.util.*
+import java.util.Optional
 
 class PostServiceTest : DescribeSpec(
     {
@@ -23,12 +21,11 @@ class PostServiceTest : DescribeSpec(
             context("게시글 저장") {
                 it("게시물을 저장하고 반환한다.") {
                     // Arrange
-                    val request = CreatePostReq("Title1", "Content1")
-                    val post = request.toEntity()
+                    val post = Post(title = "Title1", content = "Content1")
                     every { postRepository.save(any()) } returns post
 
                     // Act
-                    val result = postService.savePost(request)
+                    val result = postService.savePost(post)
 
                     // Assert
                     result.title shouldBe "Title1"
@@ -83,17 +80,17 @@ class PostServiceTest : DescribeSpec(
                     // Arrange
                     val postId = 1L
                     val post = Post(postId, "Title1", "Content1")
-                    val updateRequest = UpdatePostReq("Updated Title", "Updated Content")
+                    val updatedPost = Post(title = "Updated Title", content = "Updated Content")
                     every { postRepository.findById(postId) } returns Optional.of(post)
                     every { postRepository.save(any()) } returns post.apply {
                         updatePost(
-                            updateRequest.title,
-                            updateRequest.content,
+                            updatedPost.title,
+                            updatedPost.content,
                         )
                     }
 
                     // Act
-                    val result = postService.updatePost(postId, updateRequest)
+                    val result = postService.updatePost(postId, updatedPost)
 
                     // Assert
                     result.title shouldBe "Updated Title"

@@ -1,8 +1,5 @@
 package com.flab.artshare.post
 
-import com.flab.artshare.common.dto.CreatePostReq
-import com.flab.artshare.common.dto.PostRes
-import com.flab.artshare.common.dto.UpdatePostReq
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,28 +9,24 @@ class PostService(
     private val postRepository: PostRepository,
 ) {
 
-    fun savePost(request: CreatePostReq): Post {
-        val post = request.toEntity()
-        return postRepository.save(post)
+    fun savePost(req: Post): Post {
+        return postRepository.save(req)
     }
 
     @Transactional(readOnly = true)
-    fun getAllPosts(): List<PostRes> {
-        val posts = postRepository.findAll()
-        return posts.map { PostRes.from(it) }
+    fun getAllPosts(): List<Post> {
+        return postRepository.findAll()
     }
 
     @Transactional(readOnly = true)
-    fun getPostById(id: Long): PostRes {
-        val post = findPostOrThrow(id)
-        return PostRes.from(post)
+    fun getPostById(id: Long): Post {
+        return findPostOrThrow(id)
     }
 
-    fun updatePost(id: Long, request: UpdatePostReq): PostRes {
+    fun updatePost(id: Long, request: Post): Post {
         val post = findPostOrThrow(id)
         post.updatePost(request.title, request.content)
-        val updatedPost = postRepository.save(post)
-        return PostRes.from(updatedPost)
+        return postRepository.save(post)
     }
 
     fun deletePost(id: Long) {

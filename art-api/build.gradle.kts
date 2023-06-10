@@ -2,23 +2,23 @@ description = "api module"
 group = "com.flab"
 version = "0.0.1-SNAPSHOT"
 
-tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    enabled = true
-}
-
-tasks.getByName<Jar>("jar") {
-    enabled = true
-}
-
-tasks.getByName<Jar>("jar") {
-    enabled = true
+tasks {
+    bootJar { enabled = true }
 }
 
 dependencies {
     implementation(project(mapOf("path" to ":art-domain")))
     implementation(project(mapOf("path" to ":art-external")))
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    testImplementation("org.springframework.security:spring-security-test")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
+    implementation(Dependencies.springBootStarterWeb)
+    implementation(Dependencies.springBootStarterSecurity)
+    testImplementation(Dependencies.springSecurityTest)
+    implementation(Dependencies.springdocOpenapiUi)
+    testImplementation(Dependencies.mockk)
+    testImplementation(Dependencies.kotestRunnerJUnit5)
+    testImplementation(Dependencies.kotestExtensionsSpring)
+    implementation(Dependencies.springBootStarterDataJpa)
+    implementation(Dependencies.jacksonModuleKotlin)
+    testImplementation(Dependencies.springBootStarterTest)
+    implementation(Dependencies.micrometerCore)
+    implementation(Dependencies.springBootStarterActuator)
 }
