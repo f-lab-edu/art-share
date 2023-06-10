@@ -79,8 +79,7 @@ jobs:
                         echo "${{ secrets.DOCKER_PASSWORD}}" | docker login ghcr.io -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
                         docker rm -f $(docker ps -q -a)
                         docker pull ghcr.io/${{ github.repository }}
-                        nohup docker run \
+                        docker run \
                         -p 8080:8080 \
-                        ghcr.io/${{ github.repository }} \
-                        > nohup.out 2>&1 &
+                        ghcr.io/${{ github.repository }}
 
