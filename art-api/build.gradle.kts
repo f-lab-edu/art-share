@@ -13,12 +13,7 @@ dependencies {
     implementation(Dependencies.springBootStarterSecurity)
     testImplementation(Dependencies.springSecurityTest)
     implementation(Dependencies.springdocOpenapiUi)
-    testImplementation(Dependencies.mockk)
-    testImplementation(Dependencies.kotestRunnerJUnit5)
-    testImplementation(Dependencies.kotestExtensionsSpring)
     implementation(Dependencies.springBootStarterDataJpa)
-    implementation(Dependencies.jacksonModuleKotlin)
-    testImplementation(Dependencies.springBootStarterTest)
     implementation(Dependencies.micrometerCore)
     implementation(Dependencies.springBootStarterActuator)
 }

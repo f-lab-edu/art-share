@@ -4,6 +4,7 @@
 **/build/
 /db
 **/out
+/**.yaml
 
 # Ignore Gradle GUI config
 gradle-app.setting
