@@ -7,10 +7,10 @@ import java.lang.IllegalArgumentException
 class ProfileService(
     private val profileRepo: ProfileRepository,
 ) {
-    fun createProfile(uid: String, req: Profile): Profile {
+    fun createProfile(req: Profile): Profile {
         validateProfileRequest(req)
 
-        checkProfileExists(uid)
+        checkProfileExists(req.uid)
 
         return profileRepo.save(req)
     }

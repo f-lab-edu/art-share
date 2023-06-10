@@ -36,6 +36,12 @@
 
 </br>
 
+## 🚀 모듈 구조도
+
+<p align="center"><img width="787" alt="image" src="https://user-images.githubusercontent.com/66009926/233943359-18dc73d8-895c-4d94-a2b2-897d0fe7e176.png"></p>
+
+</br>
+
 ## 🚀 프로젝트 기술 스택
 <p align="center"><img src="https://user-images.githubusercontent.com/66009926/222895746-0a2b3e89-09d2-496e-9ee4-16ad83140d49.jpg" width="80%"></p>
 

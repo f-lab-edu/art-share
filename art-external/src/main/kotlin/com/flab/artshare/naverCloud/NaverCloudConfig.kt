@@ -1,32 +1,14 @@
 package com.flab.artshare.naverCloud
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.client.builder.AwsClientBuilder
-import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.ConstructorBinding
 
-@Configuration
-class NaverCloudConfig {
-    @Value("\${cloud.aws.credentials.access-key}")
-    private val accessKey: String? = null
-
-    @Value("\${cloud.aws.credentials.secret-key}")
-    private val secretKey: String? = null
-
-    @Value("\${cloud.aws.region.static}")
-    private val region: String? = null
-
-    @Value("\${cloud.aws.s3.endpoint}")
-    private val endPoint: String? = null
-
-    @Bean
-    fun amazonS3Client(): AmazonS3 =
-        AmazonS3ClientBuilder.standard()
-            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(accessKey, secretKey)))
-            .withEndpointConfiguration(AwsClientBuilder.EndpointConfiguration(endPoint, region))
-            .build()
-}
+@ConstructorBinding
+@ConfigurationProperties(prefix = "cloud.naver")
+data class NaverCloudConfig(
+    val accessKey: String = "dummy_key",
+    val secretKey: String = "dummy_key",
+    val region: String = "dummy_region",
+    val endpoint: String = "dummy_end_point",
+    val bucket: String = "dummy_bucket",
+)
