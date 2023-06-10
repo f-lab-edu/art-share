@@ -2,9 +2,11 @@ name: Kotlin CI with Gradle, Kover, and Detekt
 
 on:
     pull_request:
-        branches: [ "main", "dev" ]
+        branches:
+            - 'main'
+            - 'dev'
         paths:
-            - '*/src/**' # 모든 모듈의 src 폴더 추적
+            - '*'
 
 jobs:
     checkstyle:
@@ -21,13 +23,45 @@ jobs:
             -   name: Setting Checkout
                 uses: actions/checkout@v2
 
-            -   name: create-json
-                id: create-json
-                uses: jsdaniell/create-json@v1.2.2
+            -   name: Cache Gradle dependencies and build cache
+                uses: actions/cache@v2
                 with:
-                    name: firebase-admin.json
-                    json: ${{ secrets.FIREBASE_ADMIN_JSON }}
-                    dir: firebase/
+                    path: |
+                        ~/.gradle/caches/modules-2
+                        ~/.gradle/wrapper
+                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+                    restore-keys: |
+                        ${{ runner.os }}-gradle-
+
+            -   name: Create Api Property yaml file
+                run: |
+                    mkdir -p ./art-api/src/main/resources
+                    cd ./art-api/src/main/resources
+                    touch ./application.yaml
+                    echo "${{ secrets.PROPERTIES_API}}" > ./application.yaml
+                shell: bash
+
+            -   name: Create Domain Property yaml file
+                run: |
+                    mkdir -p ./art-domain/src/main/resources
+                    cd ./art-domain/src/main/resources
+                    touch ./application-domain.yaml
+                    echo "${{ secrets.PROPERTIES_DOMAIN}}" > ./application-domain.yaml
+                shell: bash
+
+            -   name: Create External Property yaml file
+                run: |
+                    mkdir -p ./art-external/src/main/resources
+                    cd ./art-external/src/main/resources
+                    touch ./application-external.yaml
+                    echo "${{ secrets.PROPERTIES_EXTERNAL}}" > ./application-external.yaml
+                shell: bash
+
+            -   name: Set up JDK 11
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '11'
+                    distribution: 'temurin'
 
             -   name: Cache Gradle dependencies and build cache
                 uses: actions/cache@v2
@@ -38,14 +72,9 @@ jobs:
                     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
                     restore-keys: |
                         ${{ runner.os }}-gradle-
-            -   name: Set up JDK 11
-                uses: actions/setup-java@v3
-                with:
-                    java-version: '11'
-                    distribution: 'temurin'
 
             -   name: Build with Gradle and Kover
-                run: ./gradlew :art-api:build koverXmlReport
+                run: ./gradlew :art-api:build koverXmlReport -Pspring.profiles.active=test
 
             -   name: Add coverage report to PR
                 uses: mi-kas/kover-report@v1
@@ -59,16 +88,6 @@ jobs:
         steps:
             -   name: Setting Checkout
                 uses: actions/checkout@v2
-
-            -   name: Cache Gradle dependencies and build cache
-                uses: actions/cache@v2
-                with:
-                    path: |
-                        ~/.gradle/caches/modules-2
-                        ~/.gradle/wrapper
-                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-                    restore-keys: |
-                        ${{ runner.os }}-gradle-
 
             -   name: Set up JDK 11
                 uses: actions/setup-java@v3
