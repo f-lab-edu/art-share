@@ -3,7 +3,7 @@ CREATE TABLE Profile (
     uid VARCHAR(255) NOT NULL,
     displayName VARCHAR(255) NOT NULL,
     about VARCHAR(255) NOT NULL,
-    imgPath VARCHAR(255) NOT NULL
+    imgPath VARCHAR(255) NOT NULL,
     primary key (id)
 ) engine=InnoDB;
 
